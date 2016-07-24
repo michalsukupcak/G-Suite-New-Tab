@@ -1,0 +1,111 @@
+<!-- Polymer -->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<!-- App elements -->
+<!-- App templating elements go here -->
+
+<!-- Iron elements -->
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+
+<!-- Paper elements -->
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+
+<!-- Neon elements -->
+<!-- Animation elements go here -->
+
+<!-- 3rd party elements -->
+<!-- Additional 3rd party elements go here -->
+
+<!-- Shared elements -->
+<!-- Elements from folder /shared go here -->
+
+<!-- Style elements -->
+<!-- Elements from folder /styles go here -->
+
+<!-- Custom elements -->
+<!-- Specific elements extending features of current element go here -->
+
+<!-- Element -->
+<dom-module id="x-search">
+  <template>
+
+    <!-- CSS -->
+    <style>
+
+      /* Element */
+      :host {
+        color: var(--light-gray-text-color);
+        display: block;
+      }
+
+      /* Google logo */
+      img {
+        display: block;
+        margin: auto auto 32px auto;
+        max-width: 256px;
+      }
+
+      /* Input wrapper */
+      div {
+        @apply(--layout-horizontal);
+        @apply(--shadow-elevation-2dp);
+        background: white;
+        box-sizing: border-box;
+        border-radius: 3px;
+        margin: auto;
+        padding: 8px 20px 5px 20px;
+        width: 768px;
+      }
+
+      /* Input wrapper - Icon button */
+      div paper-icon-button {}
+
+      /* Input wrapper - Search input */
+      div paper-input {
+        @apply(--layout-flex);
+        margin: 0 12px;
+        --paper-input-container-underline: {
+          display: none;
+        }
+      }
+
+    </style>
+
+    <!-- Google logo -->
+    <img src="../../images/google-logo.png">
+
+    <!-- Search input -->
+    <!--<div>-->
+      <!--<paper-icon-button icon="icons:search" on-tap="_focusOmnibox"></paper-icon-button>-->
+      <!--<paper-input no-label-float on-keyup="_focusOmnibox"></paper-input>-->
+      <!--<paper-icon-button icon="icons:close"></paper-icon-button>-->
+    <!--</div>-->
+
+  </template>
+  <script>
+    (function () {
+      'use strict';
+      Polymer({
+
+        /**
+         * Element configuration (is, behaviors, properties, observers).
+         */
+        is: 'x-search',
+        behaviors: [],
+        properties: {},
+        observers: [],
+
+        /**
+         * Moves focus from search input into Chrome's omnibox.
+         *
+         * @private
+         */
+        _focusOmnibox: function () {
+
+        }
+
+      });
+    })();
+  </script>
+</dom-module>

@@ -1,0 +1,82 @@
+<!-- Element -->
+<dom-module id="x-bookmarks">
+  <template>
+
+    <!-- CSS -->
+    <style include="x-bookmarks-link-styles"></style>
+    <style>
+
+      /* Element */
+      :host {
+        display: block;
+      }
+
+    </style>
+
+    <!-- Links -->
+    <template is="dom-repeat" items="[[links]]" as="link">
+      <div class="link">
+        <paper-ripple></paper-ripple>
+        <img src="chrome://favicon/[[link.url]]">
+        <a href="[[link.url]]">[[link.title]]</a>
+      </div>
+    </template>
+
+    <!-- Folders -->
+    <template is="dom-repeat" items="[[folders]]" as="folder">
+      <x-bookmarks-folder title="[[folder.title]]" children="[[folder.children]]"></x-bookmarks-folder>
+    </template>
+
+  </template>
+  <script>
+    (function () {
+      'use strict';
+      Polymer({
+
+        /**
+         * Element configuration (is, behaviors, properties, observers).
+         */
+        is: 'x-bookmarks',
+        behaviors: [],
+        properties: {
+
+          links: {
+            type: Array,
+            value: function () { return []; }
+          },
+
+          folders: {
+            type: Array,
+            value: function () { return []; }
+          }
+
+        },
+        observers: [],
+
+        ready: function () {
+          chrome.bookmarks.getTree(function (bookmarks) {
+            var otherBookmarks = bookmarks[0].children[1].children;
+            var otherBookmarksLength = otherBookmarks.length;
+            var i;
+            for (i = 0; i < otherBookmarksLength; i++) {
+              var bookmarkEntry = otherBookmarks[i];
+              if (bookmarkEntry.children === undefined) {
+                this.push('links', {
+                  title: bookmarkEntry.title,
+                  url: bookmarkEntry.url
+                });
+              } else if (bookmarkEntry.children.length > 0) {
+                this.push('folders', {
+                  title: bookmarkEntry.title,
+                  id: bookmarkEntry.id,
+                  children: bookmarkEntry.children
+                });
+              }
+            }
+          }.bind(this));
+        }
+
+      });
+    })();
+  </script>
+</dom-module>

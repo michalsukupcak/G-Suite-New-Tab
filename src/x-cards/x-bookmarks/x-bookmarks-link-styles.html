@@ -1,0 +1,43 @@
+<!-- Bookmark link styles -->
+<dom-module id="x-bookmarks-link-styles">
+  <template>
+    <style>
+
+      div.link {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        border-radius: 3px;
+        cursor: pointer;
+        padding: 4px 6px;
+        position: relative;
+      }
+      div.link:hover {
+        background: var(--border-color);
+        color: var(--dark-gray-text-color);
+      }
+
+      div.link img {
+        margin: 0 6px 0 0;
+        max-width: 24px;
+      }
+
+      div.link a {
+        color: var(--dark-gray-text-color);
+        display: inline-block;
+        text-decoration: none;
+      }
+
+      div.link iron-icon {
+        height: 16px;
+        width: 16px;
+      }
+
+      div.link span {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+    </style>
+  </template>
+</dom-module>

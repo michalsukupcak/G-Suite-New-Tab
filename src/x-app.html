@@ -1,0 +1,192 @@
+<!-- Polymer -->
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<!-- App elements -->
+<link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
+<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+
+<!-- Iron elements -->
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+
+<!-- Paper elements -->
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-menu/paper-menu.html">
+<link rel="import" href="../bower_components/paper-menu-button/paper-menu-button.html">
+<link rel="import" href="../bower_components/paper-ripple/paper-ripple.html">
+
+<!-- Neon elements -->
+<!-- Animation elements go here -->
+
+<!-- 3rd party elements -->
+<!-- Additional 3rd party elements go here -->
+
+<!-- Shared elements -->
+<!-- Elements from folder /shared go here -->
+
+<!-- Style elements -->
+<!-- Elements from folder /styles go here -->
+
+<!-- Custom elements -->
+<!-- Specific elements extending features of current element go here -->
+<link rel="import" href="x-cards/x-apps/x-apps.html">
+<link rel="import" href="x-cards/x-bookmarks/x-bookmarks.html">
+<link rel="import" href="x-cards/x-bookmarks/x-bookmarks-folder.html">
+<link rel="import" href="x-cards/x-bookmarks/x-bookmarks-link-styles.html">
+<link rel="import" href="x-cards/x-cards.html">
+<link rel="import" href="x-drawer/x-drawer.html">
+<link rel="import" href="x-shortcuts/x-shortcuts.html">
+<link rel="import" href="x-toolbar/x-toolbar.html">
+
+<!-- Element -->
+<dom-module id="x-app">
+  <template>
+
+    <!-- CSS -->
+    <style>
+
+      /* App theme */
+      :root {
+        --main-background-color: #EEE;
+        --light-gray-text-color: #AAA;
+        --gray-text-color: #777;
+        --darker-gray-text-color: #666;
+        --dark-gray-text-color: #333;
+        --border-color: #CCC;
+      }
+
+      /* Element */
+      :host {
+        display: block;
+      }
+
+      /* App panel */
+      app-drawer-layout {}
+
+      /* App panel - Drawer */
+      app-drawer-layout app-drawer {
+        --app-drawer-width: 312px;
+      }
+
+      /* App panel - Drawer - Drawer content */
+      app-drawer-layout app-drawer x-drawer {}
+
+      /* App panel - Content wrapper */
+      app-drawer-layout app-header-layout {}
+
+      /* App panel - Content wrapper - Header */
+      app-drawer-layout app-header-layout app-header {
+
+      }
+
+      /* App panel - Content wrapper - Header - Toolbar */
+      app-drawer-layout app-header-layout app-header app-toolbar {
+        color: var(--gray-text-color);
+      }
+
+      /* App panel - Content wrapper - Header - Toolbar - Drawer toggle */
+      app-drawer-layout app-header-layout app-header app-toolbar paper-icon-button {}
+
+      /* App panel - Content wrapper - Header - Toolbar - App title */
+      app-drawer-layout app-header-layout app-header app-toolbar div[main-title] {}
+
+      /* App panel - Content wrapper - Header - Toolbar - Toolbar controls */
+      app-drawer-layout app-header-layout app-header app-toolbar x-toolbar {}
+
+      /* App panel - Content wrapper - Content */
+      app-drawer-layout app-header-layout main {}
+
+      /* App panel - Content wrapper - Content - Shortcuts */
+      app-drawer-layout app-header-layout main x-shortcuts {
+        margin: 32px 0 0 0;
+      }
+
+      /* App panel - Content wrapper - Content - Cards */
+      app-drawer-layout app-header-layout main x-cards {}
+
+    </style>
+
+    <!-- App layout -->
+    <app-drawer-layout force-narrow>
+
+      <!-- Drawer panel -->
+      <app-drawer swipe-open>
+        <x-drawer></x-drawer>
+      </app-drawer>
+
+      <!-- Main panel -->
+      <app-header-layout id="headerPanel">
+
+        <!-- Header -->
+        <app-header effects="waterfall" fixed>
+          <app-toolbar id="toolbar">
+
+            <!-- Drawer toggle button -->
+            <paper-icon-button icon="icons:menu" drawer-toggle></paper-icon-button>
+
+            <!-- App title (empty) -->
+            <div main-title></div>
+
+            <!-- Chrome:// controls -->
+            <x-toolbar></x-toolbar>
+
+          </app-toolbar>
+        </app-header>
+
+        <!-- Content -->
+        <main id="content">
+
+          <!-- Shortcuts -->
+          <x-shortcuts></x-shortcuts>
+
+          <!-- Cards -->
+          <x-cards></x-cards>
+
+        </main>
+
+      </app-header-layout>
+
+    </app-drawer-layout>
+
+  </template>
+  <script>
+    (function () {
+      'use strict';
+      Polymer({
+
+        /**
+         * Element configuration (is, behaviors, properties, observers).
+         */
+        is: 'x-app',
+        behaviors: [],
+        properties: {},
+        observers: [],
+
+        /**
+         * Attach scroll observer on document when element is ready, monitor scrollTop value and change toolbar
+         * background (default color when scrollTop is 0, lighter (closed to white) when scrollTop is more than 0).
+         */
+        ready: function () {
+          document.addEventListener('scroll', function () {
+            if (document.body.scrollTop > 0) {
+              if (this.$.toolbar.style.backgroundColor !== '#FAFAFA') {
+                this.$.toolbar.style.backgroundColor = '#FAFAFA';
+              }
+            } else {
+              if (this.$.toolbar.style.backgroundColor !== '') {
+                this.$.toolbar.style.backgroundColor = '';
+              }
+            }
+          }.bind(this));
+        }
+
+      });
+    })();
+  </script>
+</dom-module>

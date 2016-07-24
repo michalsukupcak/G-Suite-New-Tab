@@ -1,0 +1,118 @@
+<!-- Element -->
+<dom-module id="x-shortcuts">
+  <template>
+
+    <!-- CSS -->
+    <style>
+
+      /* Element */
+      :host {
+        @apply(--layout-horizontal);
+        @apply(--layout-center-justified);
+        @apply(--layout-wrap);
+        font-size: 1.3em;
+      }
+
+      /* Shortcut link */
+      div {
+        border-radius: 3px;
+        padding: 18px 0 0 0;
+        position: relative;
+        transition: .2s ease;
+        width: 128px;
+      }
+      div:hover {
+        background: var(--border-color);
+        cursor: pointer;
+      }
+      div:hover > p {
+        color: var(--dark-gray-text-color);
+      }
+
+      /* Shortcut link - Icon */
+      div img {
+        display: block;
+        height: 48px;
+        margin: auto;
+        max-width: 100%;
+      }
+
+      /* Shortcut link - Text */
+      div p {
+        color: var(--gray-text-color);
+        margin: 0;
+        padding: 9px 0;
+        text-align: center;
+        transition: .2s ease;
+      }
+
+    </style>
+
+    <!-- Shortcuts -->
+    <template is="dom-repeat" items="[[shortcuts]]" as="shortcut">
+      <div on-tap="_openShortcut">
+        <paper-ripple></paper-ripple>
+        <img src="../../images/shortcuts/[[shortcut.icon]].png">
+        <p>[[shortcut.title]]</p>
+      </div>
+    </template>
+
+  </template>
+  <script>
+    (function () {
+      'use strict';
+      Polymer({
+
+        /**
+         * Element configuration (is, behaviors, properties, observers).
+         */
+        is: 'x-shortcuts',
+        behaviors: [],
+        properties: {
+
+          /**
+           * List of shortcuts on homepage.
+           */
+          shortcuts: {
+            type: Array,
+            value: function () {
+              return [
+                { type: 'web', icon: 'admin', title: 'Admin', page: 'https://admin.google.com/AdminHome' },
+                { type: 'extension', icon: 'hangouts', title: 'Hangouts', page: 'knipolnnllmklapflnccelgolnpehhpl' },
+                { type: 'web', icon: 'drive', title: 'Drive', page: 'https://drive.google.com/drive/my-drive' },
+                { type: 'web', icon: 'keep', title: 'Keep', page: 'https://keep.google.com/' },
+                { type: 'web', icon: 'calendar', title: 'Calendar', page: 'https://calendar.google.com/calendar/render' },
+                { type: 'web', icon: 'inbox', title: 'Inbox', page: 'https://inbox.google.com' },
+                { type: 'web', icon: 'my-account', title: 'My Account', page: 'https://myaccount.google.com/' },
+                { type: 'web', icon: 'groups', title: 'Groups', page: 'https://groups.google.com/a/wds.sk/forum/#!myforums' },
+                { type: 'web', icon: 'sites', title: 'Sites', page: 'https://sites.google.com/new' },
+                { type: 'web', icon: 'gmail', title: 'Gmail', page: 'https://mail.google.com/mail/u/0/#inbox' },
+                { type: 'web', icon: 'plus', title: 'Google+', page: 'https://plus.google.com/' },
+                { type: 'web', icon: 'gitlab', title: 'Gitlab', page: 'http://gitlab.wds.sk/' },
+                { type: 'web', icon: 'youtrack', title: 'Youtrack', page: 'http://wds.myjetbrains.com/youtrack/dashboard' },
+              ];
+            }
+          }
+
+        },
+        observers: [],
+
+        /**
+         * Opens chrome://... page.
+         *
+         * @private
+         */
+        _openShortcut: function (event) {
+          if (event.model.shortcut.type === 'web') {
+            chrome.tabs.create({ url: event.model.shortcut.page });
+          } else if (event.model.shortcut.type === 'extension') {
+            chrome.management.launchApp(event.model.shortcut.page);
+          } else {
+            alert('Invalid shortcut type: "' + event.model.shortcut.type + '"');
+          }
+        }
+
+      });
+    })();
+  </script>
+</dom-module>

@@ -1,0 +1,123 @@
+<!-- Element -->
+<dom-module id="x-apps">
+  <template>
+
+    <!-- CSS -->
+    <style>
+
+      /* Element */
+      :host {
+        @apply(--layout-horizontal);
+        @apply(--layout-center-justified);
+        @apply(--layout-wrap);
+      }
+
+      /* App wrapper */
+      div {
+        border-radius: 3px;
+        cursor: pointer;
+        padding: 4px 6px;
+        margin: 3px;
+        position: relative;
+        width: 25%;
+      }
+      div:hover {
+        background: var(--border-color);
+        color: var(--dark-gray-text-color);
+      }
+
+      /* App wrapper - Icon */
+      div img {
+        display: block;
+        margin: auto;
+        max-width: 48px;
+      }
+
+      /* App wrapper - Name */
+      div span {
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-align: center;
+        text-overflow: ellipsis;
+      }
+
+    </style>
+
+    <!-- Apps -->
+    <template is="dom-repeat" items="[[apps]]" as="app" sort="_sortApps">
+      <div on-tap="_openApp">
+        <paper-ripple></paper-ripple>
+        <img src="[[app.icon]]">
+        <span>[[app.name]]</span>
+      </div>
+    </template>
+
+  </template>
+  <script>
+    (function () {
+      'use strict';
+      Polymer({
+
+        /**
+         * Element configuration (is, behaviors, properties, observers).
+         */
+        is: 'x-apps',
+        behaviors: [],
+        properties: {
+
+          /**
+           * List of installed apps from chrome.management API.
+           */
+          apps: {
+            type: Array,
+            value: function () { return []; }
+          }
+
+        },
+        observers: [],
+
+        /**
+         * Load apps from chrome.management API into this.apps array.
+         */
+        ready: function () {
+          chrome.management.getAll(function (extensions) {
+            extensions.forEach(function (extension) {
+              if (extension.type === 'hosted_app' || extension.type === 'packaged_app' || extension.type === 'legacy_packaged_app') {
+                this.push('apps', {
+                  id: extension.id,
+                  name: extension.name,
+                  icon: extension.icons[extension.icons.length - 1].url,
+                });
+              }
+            }.bind(this));
+          }.bind(this));
+        },
+
+        /**
+         * Opens app using chrome.management API.
+         */
+        _openApp: function (event) {
+          chrome.management.launchApp(event.model.app.id);
+        },
+
+        /**
+         * Comparator between apps based on their names.
+         *
+         * @param a
+         * @param b
+         * @returns {number}
+         * @private
+         */
+        _sortApps: function (a, b) {
+          if (a.name === b.name) {
+            return 0;
+          } else {
+            return (a.name < b.name ? -1 : 1);
+          }
+        }
+
+      });
+    })();
+  </script>
+</dom-module>

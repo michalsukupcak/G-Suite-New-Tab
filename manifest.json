@@ -1,0 +1,21 @@
+{
+  "manifest_version": 2,
+  "version": "1.0",
+  "name": "Apps for Work New Tab",
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "icons": {
+    "16": "images/apps-for-work-icon-16.png",
+    "48": "images/apps-for-work-icon-48.png",
+    "128": "images/apps-for-work-icon-128.png"
+  },
+  "chrome_url_overrides": {
+    "newtab": "index.vulcanized.html"
+  },
+  "permissions": [
+    "bookmarks",
+    "chrome://favicon/",
+    "identity",
+    "management",
+    "tabs"
+  ]
+}

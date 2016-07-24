@@ -1,0 +1,78 @@
+<!-- Element -->
+<dom-module id="x-bookmarks-folder">
+  <template>
+
+    <!-- CSS -->
+    <style include="x-bookmarks-link-styles"></style>
+    <style>
+
+      /* Element */
+      :host {
+        display: block;
+      }
+
+      /* Folder title */
+      h1 {
+        font-size: 1.6em;
+        margin-bottom: 2px;
+      }
+
+    </style>
+
+    <!-- Folder title -->
+    <h1>[[title]]</h1>
+
+    <!-- Folder links -->
+    <template is="dom-repeat" items="[[links]]" as="link">
+      <div class="link">
+        <paper-ripple></paper-ripple>
+        <img src="chrome://favicon/[[link.url]]">
+        <a href="[[link.url]]">[[link.title]]</a>
+      </div>
+    </template>
+
+  </template>
+  <script>
+    (function () {
+      'use strict';
+      Polymer({
+
+        /**
+         * Element configuration (is, behaviors, properties, observers).
+         */
+        is: 'x-bookmarks-folder',
+        behaviors: [],
+        properties: {
+
+          title: {
+            type: String
+          },
+
+          children: {
+            type: Array,
+            observer: '_childrenChanged'
+          },
+
+          links: {
+            type: Array,
+            value: function () { return []; }
+          }
+
+        },
+        observers: [],
+
+        _childrenChanged: function (value) {
+          value.forEach(function (child) {
+            if (child.children === undefined) {
+              this.push('links', {
+                title: child.title,
+                url: child.url
+              });
+            }
+          }.bind(this));
+        }
+
+      });
+    })();
+  </script>
+</dom-module>

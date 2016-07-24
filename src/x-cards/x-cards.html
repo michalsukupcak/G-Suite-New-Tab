@@ -1,0 +1,65 @@
+<!-- Element -->
+<dom-module id="x-cards">
+  <template>
+
+    <!-- CSS -->
+    <style>
+
+      /* Element */
+      :host {
+        @apply(--layout-horizontal);
+        @apply(--layout-center-justified);
+        @apply(--layout-wrap);
+        margin: auto;
+        padding: 16px 0;
+        width: 100%;
+      }
+
+      /* Card wrapper */
+      paper-card {
+        box-sizing: border-box;
+        color: #666;
+        margin: 12px;
+        width: 21%;
+        --paper-card-header: {
+          border-bottom: 1px solid var(--divider-color);
+        }
+      }
+
+      /* Card wrapper - Card content */
+      paper-card div.card-content {}
+
+    </style>
+
+    <!-- Bookmarks -->
+    <paper-card heading="Bookmarks">
+      <div class="card-content">
+        <x-bookmarks></x-bookmarks>
+      </div>
+    </paper-card>
+
+    <!-- Recent sites -->
+    <paper-card heading="Apps">
+      <div class="card-content">
+        <x-apps></x-apps>
+      </div>
+    </paper-card>
+
+  </template>
+  <script>
+    (function () {
+      'use strict';
+      Polymer({
+
+        /**
+         * Element configuration (is, behaviors, properties, observers).
+         */
+        is: 'x-cards',
+        behaviors: [],
+        properties: {},
+        observers: []
+
+      });
+    })();
+  </script>
+</dom-module>

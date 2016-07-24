@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <!-- Meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <meta name="theme-color" content="#EEE">
+    <title>Apps for Work New Tab</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" sizes="32x32" href="/images/apps-for-work-icon-16.png">
+
+    <!-- Manifest -->
+    <link rel="manifest" href="/manifest.json">
+
+    <!-- Polymer init -->
+    <script>
+      window.Polymer = {lazyRegister: true, dom: 'shadow'};
+      (function() {
+        if ('registerElement' in document
+            && 'import' in document.createElement('link')
+            && 'content' in document.createElement('template')) {
+        } else {
+          var e = document.createElement('script');
+          e.src = '/bower_components/webcomponentsjs/webcomponents-lite.min.js';
+          document.head.appendChild(e);
+        }
+      })();
+    </script>
+
+    <!-- Import main app element -->
+    <link rel="import" href="./src/x-app.html">
+
+    <!-- Main styles -->
+    <style>
+      body { background-color: #EEE; font-family: 'Roboto', 'Noto', sans-serif; line-height: 1.5; margin: 0; }
+      ::-webkit-scrollbar { display: none; }
+    </style>
+
+  </head>
+  <body>
+
+    <!-- App -->
+    <x-app></x-app>
+
+  </body>
+</html>

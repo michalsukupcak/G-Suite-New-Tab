@@ -1,0 +1,127 @@
+<!-- Element -->
+<dom-module id="x-toolbar">
+  <template>
+
+    <!-- CSS -->
+    <style>
+
+      /* Element */
+      :host {
+        @apply(--layout-horizontal);
+        color: var(--gray-text-color);
+        transition: .2s ease;
+      }
+
+      /* Link */
+      div {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        border-radius: 3px;
+        cursor: pointer;
+        font-size: .8em;
+        padding: 9px 9px;
+        position: relative;
+        transition: .2s ease;
+      }
+      div:hover {
+        color: var(--dark-gray-text-color);
+      }
+
+      /* Link - Icon */
+      div iron-icon {
+        margin: 0 9px 0 0;
+      }
+
+      /* Link - Text */
+      div span {}
+
+      /* Overflow menu */
+      paper-menu-button {
+        padding: 0;
+      }
+
+      /* Overflow menu - Icon */
+      paper-menu-button paper-icon-button.dropdown-trigger {}
+
+      /* Overflow menu - Content */
+      paper-menu-button paper-menu.dropdown-content {}
+
+      /* Overflow menu - Content - Menu item */
+      paper-menu-button paper-menu paper-item {
+        cursor: pointer;
+      }
+
+    </style>
+
+    <!-- Tabs -->
+    <template is="dom-repeat" items="[[tabs]]" as="tab">
+      <div on-tap="_openTab">
+        <paper-ripple></paper-ripple>
+        <iron-icon icon="icons:[[tab.icon]]"></iron-icon>
+        <span>[[tab.title]]</span>
+      </div>
+    </template>
+
+    <!-- Settings in overflow menu -->
+    <paper-menu-button horizontal-align="right">
+      <paper-icon-button icon="icons:more-vert" class="dropdown-trigger"></paper-icon-button>
+      <paper-menu class="dropdown-content">
+        <paper-item on-tap="_openSettings">Settings</paper-item>
+      </paper-menu>
+    </paper-menu-button>
+
+  </template>
+  <script>
+    (function () {
+      'use strict';
+      Polymer({
+
+        /**
+         * Element configuration (is, behaviors, properties, observers).
+         */
+        is: 'x-toolbar',
+        behaviors: [],
+        properties: {
+
+          /**
+           * List of chrome://... links in toolbar.
+           */
+          tabs: {
+            type: Array,
+            value: function () {
+              return [
+                { page: 'apps', icon: 'icons:apps', title: 'Apps' },
+                { page: 'bookmarks', icon: 'icons:star', title: 'Bookmarks' },
+                { page: 'downloads', icon: 'icons:file-download', title: 'Downloads' },
+                { page: 'history', icon: 'icons:history', title: 'History' },
+                { page: 'extensions', icon: 'icons:extension', title: 'Extensions' },
+                { page: 'flags', icon: 'icons:flag', title: 'Flags' }
+              ];
+            }
+          }
+
+        },
+        observers: [],
+
+        /**
+         * Opens chrome://... page.
+         *
+         * @private
+         */
+        _openTab: function (event) {
+          chrome.tabs.create({ url: 'chrome://' + event.model.tab.page });
+        },
+
+        /**
+         * Opens chrome://settings.
+         *
+         * @private
+         */
+        _openSettings: function () {
+          chrome.tabs.create({ url: 'chrome://settings' });
+        }
+
+      });
+    })();
+  </script>
+</dom-module>

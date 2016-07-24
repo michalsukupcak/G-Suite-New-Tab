@@ -1,0 +1,196 @@
+<!-- Element -->
+<dom-module id="x-drawer">
+  <template>
+
+    <!-- CSS -->
+    <style>
+
+      /* Element */
+      :host {
+        color: var(--darker-gray-text-color);
+        display: block;
+        font-size: 1.3em;
+      }
+
+      /* Header */
+      header {
+        @apply(--shadow-elevation-2dp);
+        background: #EEE;
+        border-bottom: 1px solid var(--border-color);
+        margin: 0 0 12px 0;
+        padding: 12px 24px;
+      }
+
+      /* Header - Chrome logo */
+      header img {
+        max-width: 100%;
+      }
+
+      /* Content */
+      main {}
+
+      /* Content - Link */
+      main div {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        cursor: pointer;
+        padding: 12px 24px;
+        position: relative;
+        transition: .2s ease;
+      }
+      main div:hover {
+        background: var(--border-color);
+        color: var(--dark-gray-text-color);
+      }
+
+      /* Content - Link - Ripple */
+      main div paper-ripple {}
+
+      /* Content - Link - Icon */
+      main div iron-icon {
+        margin-right: 32px;
+      }
+
+      /* Content - Link - Text */
+      main div span {}
+
+    </style>
+
+    <!-- Drawer header -->
+    <header>
+      <img src="../../images/apps-for-work.png">
+    </header>
+
+    <!-- Drawer content -->
+    <main>
+
+      <!-- New tab link -->
+      <div on-tap="_openNewTab">
+        <paper-ripple></paper-ripple>
+        <iron-icon icon="icons:add" item-icon></iron-icon>
+        <span>New Tab</span>
+      </div>
+
+      <!-- New window link -->
+      <div on-tap="_openNewWindow">
+        <paper-ripple></paper-ripple>
+        <iron-icon icon="icons:launch" item-icon></iron-icon>
+        <span>New Window</span>
+      </div>
+
+      <!-- Incognito window link -->
+      <div on-tap="_openIncognitoWindow">
+        <paper-ripple></paper-ripple>
+        <iron-icon icon="icons:visibility-off" item-icon></iron-icon>
+        <span>Incognito Window</span>
+      </div>
+
+      <!-- Web store link -->
+      <div on-tap="_openWebStore">
+        <paper-ripple></paper-ripple>
+        <iron-icon icon="icons:store" item-icon></iron-icon>
+        <span>Chrome Web Store</span>
+      </div>
+
+      <!-- Settings link -->
+      <div on-tap="_openSettings">
+        <paper-ripple></paper-ripple>
+        <span>Settings</span>
+      </div>
+
+      <!-- About link -->
+      <div on-tap="_openAbout">
+        <paper-ripple></paper-ripple>
+        <span>About</span>
+      </div>
+
+      <!-- Help link -->
+      <div on-tap="_openHelp">
+        <paper-ripple></paper-ripple>
+        <span>Help</span>
+      </div>
+
+    </main>
+
+  </template>
+  <script>
+    (function () {
+      'use strict';
+      Polymer({
+
+        /**
+         * Element configuration (is, behaviors, properties, observers).
+         */
+        is: 'x-drawer',
+        behaviors: [],
+        properties: {},
+        observers: [],
+
+        /**
+         * Opens new tab.
+         *
+         * @private
+         */
+        _openNewTab: function () {
+
+        },
+
+        /**
+         * Opens new window.
+         *
+         * @private
+         */
+        _openNewWindow: function () {
+
+        },
+
+        /**
+         * Opens new incognito window.
+         *
+         * @private
+         */
+        _openIncognitoWindow: function () {
+
+        },
+
+        /**
+         * Opens Chrome Web Store in new tab.
+         *
+         * @private
+         */
+        _openWebStore: function () {
+
+        },
+
+        /**
+         * Opens chrome://settings page.
+         *
+         * @private
+         */
+        _openSettings: function () {
+
+        },
+
+        /**
+         * Opens chrome://about page.
+         *
+         * @private
+         */
+        _openAbout: function () {
+
+        },
+
+        /**
+         * Opens Chrome support page on support.google.com.
+         * https://support.google.com/chrome/?p=help&ctx=settings#topic=3227046
+         *
+         * @private
+         */
+        _openHelp: function () {
+
+        }
+
+      });
+    })();
+  </script>
+</dom-module>
