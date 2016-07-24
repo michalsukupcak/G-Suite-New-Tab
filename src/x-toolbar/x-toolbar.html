@@ -53,20 +53,20 @@
 
     </style>
 
-    <!-- Tabs -->
-    <template is="dom-repeat" items="[[tabs]]" as="tab">
-      <div on-tap="_openTab">
+    <!-- Chrome tabs -->
+    <template is="dom-repeat" items="[[chromeTabs]]" as="tab">
+      <div on-tap="openChromeTab">
         <paper-ripple></paper-ripple>
         <iron-icon icon="icons:[[tab.icon]]"></iron-icon>
         <span>[[tab.title]]</span>
       </div>
     </template>
 
-    <!-- Settings in overflow menu -->
+    <!-- Customize extension -->
     <paper-menu-button horizontal-align="right">
       <paper-icon-button icon="icons:more-vert" class="dropdown-trigger"></paper-icon-button>
       <paper-menu class="dropdown-content">
-        <paper-item on-tap="_openSettings">Settings</paper-item>
+        <paper-item on-tap="_openCustomizeDialog">Customize Extension</paper-item>
       </paper-menu>
     </paper-menu-button>
 
@@ -80,45 +80,22 @@
          * Element configuration (is, behaviors, properties, observers).
          */
         is: 'x-toolbar',
-        behaviors: [],
-        properties: {
-
-          /**
-           * List of chrome://... links in toolbar.
-           */
-          tabs: {
-            type: Array,
-            value: function () {
-              return [
-                { page: 'apps', icon: 'icons:apps', title: 'Apps' },
-                { page: 'bookmarks', icon: 'icons:star', title: 'Bookmarks' },
-                { page: 'downloads', icon: 'icons:file-download', title: 'Downloads' },
-                { page: 'history', icon: 'icons:history', title: 'History' },
-                { page: 'extensions', icon: 'icons:extension', title: 'Extensions' },
-                { page: 'flags', icon: 'icons:flag', title: 'Flags' }
-              ];
-            }
-          }
-
-        },
+        behaviors: [
+          Polymer.XChromeTabsBehavior
+        ],
+        properties: {},
         observers: [],
-
-        /**
-         * Opens chrome://... page.
-         *
-         * @private
-         */
-        _openTab: function (event) {
-          chrome.tabs.create({ url: 'chrome://' + event.model.tab.page });
-        },
 
         /**
          * Opens chrome://settings.
          *
          * @private
          */
-        _openSettings: function () {
-          chrome.tabs.create({ url: 'chrome://settings' });
+        _openCustomizeDialog: function () {
+          this.fire('iron-signal', {
+            name: 'toast',
+            data: 'Feature not implemented yet, will become available in a future release.'
+          });
         }
 
       });

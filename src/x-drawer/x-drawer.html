@@ -54,6 +54,12 @@
       /* Content - Link - Text */
       main div span {}
 
+      /* Content - Link - Text */
+      main hr {
+        border: none;
+        border-top: 1px solid var(--border-color);
+      }
+
     </style>
 
     <!-- Drawer header -->
@@ -92,22 +98,37 @@
         <span>Chrome Web Store</span>
       </div>
 
+      <!-- 1st separator -->
+      <hr>
+
+      <!-- Chrome tabs -->
+      <template is="dom-repeat" items="[[chromeTabs]]" as="tab">
+        <div on-tap="openChromeTab">
+          <paper-ripple></paper-ripple>
+          <iron-icon icon="icons:[[tab.icon]]"></iron-icon>
+          <span>[[tab.title]]</span>
+        </div>
+      </template>
+
+      <!-- 2nd separator -->
+      <hr>
+
       <!-- Settings link -->
       <div on-tap="_openSettings">
         <paper-ripple></paper-ripple>
-        <span>Settings</span>
+        <span>Chrome Settings</span>
       </div>
 
       <!-- About link -->
       <div on-tap="_openAbout">
         <paper-ripple></paper-ripple>
-        <span>About</span>
+        <span>About Chrome</span>
       </div>
 
       <!-- Help link -->
       <div on-tap="_openHelp">
         <paper-ripple></paper-ripple>
-        <span>Help</span>
+        <span>Help & Support</span>
       </div>
 
     </main>
@@ -122,7 +143,9 @@
          * Element configuration (is, behaviors, properties, observers).
          */
         is: 'x-drawer',
-        behaviors: [],
+        behaviors: [
+          Polymer.XChromeTabsBehavior
+        ],
         properties: {},
         observers: [],
 
@@ -132,7 +155,7 @@
          * @private
          */
         _openNewTab: function () {
-
+          chrome.tabs.create({ url: 'chrome://newtab' });
         },
 
         /**
@@ -141,7 +164,7 @@
          * @private
          */
         _openNewWindow: function () {
-
+          chrome.windows.create({ url: 'chrome://newtab' });
         },
 
         /**
@@ -150,7 +173,7 @@
          * @private
          */
         _openIncognitoWindow: function () {
-
+          chrome.windows.create({ url: 'chrome://newtab', incognito: true });
         },
 
         /**
@@ -159,7 +182,7 @@
          * @private
          */
         _openWebStore: function () {
-
+          chrome.tabs.create({ url: 'https://chrome.google.com/webstore' });
         },
 
         /**
@@ -168,7 +191,7 @@
          * @private
          */
         _openSettings: function () {
-
+          chrome.tabs.create({ url: 'chrome://settings' });
         },
 
         /**
@@ -177,7 +200,7 @@
          * @private
          */
         _openAbout: function () {
-
+          chrome.tabs.create({ url: 'chrome://help' });
         },
 
         /**
@@ -187,7 +210,7 @@
          * @private
          */
         _openHelp: function () {
-
+          chrome.tabs.create({ url: 'https://support.google.com/chrome' });
         }
 
       });

@@ -12,6 +12,8 @@
 <!-- Iron elements -->
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-localstorage/iron-localstorage.html">
+<link rel="import" href="../bower_components/iron-signals/iron-signals.html">
 
 <!-- Paper elements -->
 <link rel="import" href="../bower_components/paper-card/paper-card.html">
@@ -20,21 +22,12 @@
 <link rel="import" href="../bower_components/paper-menu/paper-menu.html">
 <link rel="import" href="../bower_components/paper-menu-button/paper-menu-button.html">
 <link rel="import" href="../bower_components/paper-ripple/paper-ripple.html">
-
-<!-- Neon elements -->
-<!-- Animation elements go here -->
-
-<!-- 3rd party elements -->
-<!-- Additional 3rd party elements go here -->
+<link rel="import" href="../bower_components/paper-toast/paper-toast.html">
 
 <!-- Shared elements -->
-<!-- Elements from folder /shared go here -->
-
-<!-- Style elements -->
-<!-- Elements from folder /styles go here -->
+<link rel="import" href="shared/behavior/x-chrome-tabs-behavior/x-chrome-tabs-behavior.html">
 
 <!-- Custom elements -->
-<!-- Specific elements extending features of current element go here -->
 <link rel="import" href="x-cards/x-apps/x-apps.html">
 <link rel="import" href="x-cards/x-bookmarks/x-bookmarks.html">
 <link rel="import" href="x-cards/x-bookmarks/x-bookmarks-folder.html">
@@ -154,6 +147,14 @@
 
     </app-drawer-layout>
 
+    <!-- Toast -->
+    <paper-toast id="toast"></paper-toast>
+
+    <!-- Signals event bus -->
+    <iron-signals
+      on-iron-signal-toast="_openToast">
+    </iron-signals>
+
   </template>
   <script>
     (function () {
@@ -184,6 +185,20 @@
               }
             }
           }.bind(this));
+        },
+
+        /**
+         * Handler for iron-signal-toast event, opens paper-toast with a message from event.
+         *
+         * @param event
+         * @private
+         */
+        _openToast: function (event) {
+          if (this.$.toast.opened) {
+            this.$.toast.hide();
+          }
+          this.$.toast.text = event.detail;
+          this.$.toast.show();
         }
 
       });

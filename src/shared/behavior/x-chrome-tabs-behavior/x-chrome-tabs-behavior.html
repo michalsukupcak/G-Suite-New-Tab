@@ -1,0 +1,39 @@
+<!-- Behavior -->
+<script>
+  (function() {
+    'use strict';
+    Polymer.XChromeTabsBehavior = {
+
+      properties: {
+
+        /**
+         * List of chrome://... links in toolbar.
+         */
+        chromeTabs: {
+          type: Array,
+          value: function () {
+            return [
+              { page: 'apps', icon: 'icons:apps', title: 'Apps' },
+              { page: 'bookmarks', icon: 'icons:star', title: 'Bookmarks' },
+              { page: 'downloads', icon: 'icons:file-download', title: 'Downloads' },
+              { page: 'history', icon: 'icons:history', title: 'History' },
+              { page: 'extensions', icon: 'icons:extension', title: 'Extensions' },
+              { page: 'flags', icon: 'icons:flag', title: 'Flags' }
+            ];
+          }
+        }
+
+      },
+
+      /**
+       * Opens chrome://... page.
+       *
+       * @private
+       */
+      openChromeTab: function (event) {
+        chrome.tabs.create({ url: 'chrome://' + event.model.tab.page });
+      }
+
+    };
+  })();
+</script>
