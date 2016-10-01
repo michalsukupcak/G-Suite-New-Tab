@@ -54,12 +54,14 @@
     </style>
 
     <!-- Chrome tabs -->
-    <template is="dom-repeat" items="[[chromeTabs]]" as="tab">
-      <div on-tap="openChromeTab">
-        <paper-ripple></paper-ripple>
-        <iron-icon icon="icons:[[tab.icon]]"></iron-icon>
-        <span>[[tab.title]]</span>
-      </div>
+    <template is="dom-repeat" items="[[tabs]]" as="tab">
+      <span hidden$="[[!tab.visible]]">
+        <div on-tap="_openTab">
+          <paper-ripple></paper-ripple>
+          <iron-icon icon="icons:[[tab.icon]]"></iron-icon>
+          <span>[[tab.title]]</span>
+        </div>
+      </span>
     </template>
 
     <!-- Customize extension -->
@@ -69,6 +71,9 @@
         <paper-item on-tap="_openCustomizeDialog">Customize Extension</paper-item>
       </paper-menu>
     </paper-menu-button>
+
+    <!-- Customize extension dialog -->
+    <x-toolbar-customize-dialog id="customizeDialog" tabs="{{tabs}}" shortcuts="{{shortcuts}}"></x-toolbar-customize-dialog>
 
   </template>
   <script>
@@ -80,22 +85,44 @@
          * Element configuration (is, behaviors, properties, observers).
          */
         is: 'x-toolbar',
-        behaviors: [
-          Polymer.XChromeTabsBehavior
-        ],
-        properties: {},
+        behaviors: [],
+        properties: {
+
+          /**
+           * List of chrome://.. tabs used in drawer and toolbar.
+           */
+          tabs: {
+            type: Array,
+            notify: true
+          },
+
+          /**
+           * List of app shortcuts.
+           */
+          shortcuts: {
+            type: Array,
+            notify: true
+          }
+
+        },
         observers: [],
 
         /**
-         * Opens chrome://settings.
+         * Opens chrome://... page.
+         *
+         * @private
+         */
+        _openTab: function (event) {
+          chrome.tabs.create({ url: 'chrome://' + event.model.tab.page });
+        },
+
+        /**
+         * Opens paper-dialog inside x-toolbar-customize-dialog.
          *
          * @private
          */
         _openCustomizeDialog: function () {
-          this.fire('iron-signal', {
-            name: 'toast',
-            data: 'Feature not implemented yet, will become available in a future release.'
-          });
+          this.$.customizeDialog.open();
         }
 
       });

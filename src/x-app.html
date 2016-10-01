@@ -1,40 +1,35 @@
-<!-- Polymer -->
+<!-- Imports -->
 <link rel="import" href="../bower_components/polymer/polymer.html">
-
-<!-- App elements -->
 <link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
 <link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
 <link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
 <link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
 <link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
 <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
-
-<!-- Iron elements -->
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/iron-localstorage/iron-localstorage.html">
 <link rel="import" href="../bower_components/iron-signals/iron-signals.html">
-
-<!-- Paper elements -->
+<link rel="import" href="../bower_components/neon-animation/animations/fade-out-animation.html">
+<link rel="import" href="../bower_components/neon-animation/animations/scale-up-animation.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../bower_components/paper-menu/paper-menu.html">
 <link rel="import" href="../bower_components/paper-menu-button/paper-menu-button.html">
 <link rel="import" href="../bower_components/paper-ripple/paper-ripple.html">
 <link rel="import" href="../bower_components/paper-toast/paper-toast.html">
-
-<!-- Shared elements -->
-<link rel="import" href="shared/behavior/x-chrome-tabs-behavior/x-chrome-tabs-behavior.html">
-
-<!-- Custom elements -->
-<link rel="import" href="x-cards/x-apps/x-apps.html">
 <link rel="import" href="x-cards/x-bookmarks/x-bookmarks.html">
 <link rel="import" href="x-cards/x-bookmarks/x-bookmarks-folder.html">
 <link rel="import" href="x-cards/x-bookmarks/x-bookmarks-link-styles.html">
 <link rel="import" href="x-cards/x-cards.html">
 <link rel="import" href="x-drawer/x-drawer.html">
 <link rel="import" href="x-shortcuts/x-shortcuts.html">
+<link rel="import" href="x-toolbar/x-toolbar-customize-dialog.html">
 <link rel="import" href="x-toolbar/x-toolbar.html">
 
 <!-- Element -->
@@ -46,6 +41,7 @@
 
       /* App theme */
       :root {
+        --primary-color: #009688;
         --main-background-color: #EEE;
         --light-gray-text-color: #AAA;
         --gray-text-color: #777;
@@ -100,7 +96,7 @@
 
       <!-- Drawer panel -->
       <app-drawer swipe-open>
-        <x-drawer></x-drawer>
+        <x-drawer tabs="{{tabs}}"></x-drawer>
       </app-drawer>
 
       <!-- Main panel -->
@@ -117,7 +113,7 @@
             <div main-title>Apps for Work New Tab</div>
 
             <!-- Chrome:// controls -->
-            <x-toolbar></x-toolbar>
+            <x-toolbar tabs="{{tabs}}" shortcuts="{{shortcuts}}"></x-toolbar>
 
           </app-toolbar>
         </app-header>
@@ -126,7 +122,7 @@
         <main id="content">
 
           <!-- Shortcuts -->
-          <x-shortcuts></x-shortcuts>
+          <x-shortcuts shortcuts="{{shortcuts}}"></x-shortcuts>
 
           <!-- Cards -->
           <x-cards></x-cards>
@@ -145,6 +141,10 @@
       on-iron-signal-toast="_openToast">
     </iron-signals>
 
+    <!-- Browser local storage -->
+    <iron-localstorage name="__appsforworknewtab_tabs" value="{{tabs}}" on-iron-localstorage-load-empty="_tabsEmpty"></iron-localstorage>
+    <iron-localstorage name="__appsforworknewtab_shortcuts" value="{{shortcuts}}" on-iron-localstorage-load-empty="_shortcutsEmpty"></iron-localstorage>
+
   </template>
   <script>
     (function () {
@@ -156,7 +156,23 @@
          */
         is: 'x-app',
         behaviors: [],
-        properties: {},
+        properties: {
+
+          /**
+           * List of chrome://.. tabs used in drawer and toolbar.
+           */
+          tabs: {
+            type: Array
+          },
+
+          /**
+           * List of app shortcuts.
+           */
+          shortcuts: {
+            type: Array
+          }
+
+        },
         observers: [],
 
         /**
@@ -175,6 +191,45 @@
               }
             }
           }.bind(this));
+        },
+
+        /**
+         * If this.tabs variable is empty, set new default value for the array.
+         *
+         * @private
+         */
+        _tabsEmpty: function () {
+          this.set('tabs', [
+            { page: 'apps', icon: 'icons:apps', title: 'Apps', visible: true },
+            { page: 'bookmarks', icon: 'icons:star', title: 'Bookmarks', visible: true },
+            { page: 'downloads', icon: 'icons:file-download', title: 'Downloads', visible: true },
+            { page: 'history', icon: 'icons:history', title: 'History', visible: true },
+            { page: 'extensions', icon: 'icons:extension', title: 'Extensions', visible: true },
+            { page: 'flags', icon: 'icons:flag', title: 'Flags', visible: true }
+          ]);
+        },
+
+        /**
+         * If this.shortcuts variable is empty, set new default value for the array.
+         *
+         * @private
+         */
+        _shortcutsEmpty: function () {
+          this.set('shortcuts', [
+            { type: 'web', icon: 'admin', title: 'Admin', page: 'https://admin.google.com/AdminHome', visible: true },
+            { type: 'extension', icon: 'hangouts', title: 'Hangouts', page: 'knipolnnllmklapflnccelgolnpehhpl', visible: true },
+            { type: 'web', icon: 'drive', title: 'Drive', page: 'https://drive.google.com/drive/my-drive', visible: true },
+            { type: 'web', icon: 'keep', title: 'Keep', page: 'https://keep.google.com/', visible: true },
+            { type: 'web', icon: 'calendar', title: 'Calendar', page: 'https://calendar.google.com/calendar/render', visible: true },
+            { type: 'web', icon: 'inbox', title: 'Inbox', page: 'https://inbox.google.com', visible: true },
+            { type: 'web', icon: 'my-account', title: 'My Account', page: 'https://myaccount.google.com/', visible: true },
+            { type: 'web', icon: 'groups', title: 'Groups', page: 'https://groups.google.com/a/wds.sk/forum/#!myforums', visible: true },
+            { type: 'web', icon: 'sites', title: 'Sites', page: 'https://sites.google.com/new', visible: true },
+            { type: 'web', icon: 'gmail', title: 'Gmail', page: 'https://mail.google.com/mail/u/0/#inbox', visible: true },
+            { type: 'web', icon: 'plus', title: 'Google+', page: 'https://plus.google.com/', visible: true },
+            { type: 'web', icon: 'gitlab', title: 'Gitlab', page: 'http://gitlab.wds.sk/', visible: true },
+            { type: 'web', icon: 'youtrack', title: 'Youtrack', page: 'http://wds.myjetbrains.com/youtrack/dashboard', visible: true }
+          ]);
         },
 
         /**

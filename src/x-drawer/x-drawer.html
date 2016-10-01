@@ -102,12 +102,14 @@
       <hr>
 
       <!-- Chrome tabs -->
-      <template is="dom-repeat" items="[[chromeTabs]]" as="tab">
-        <div on-tap="openChromeTab">
-          <paper-ripple></paper-ripple>
-          <iron-icon icon="icons:[[tab.icon]]"></iron-icon>
-          <span>[[tab.title]]</span>
-        </div>
+      <template is="dom-repeat" items="[[tabs]]" as="tab">
+        <span hidden$="[[!tab.visible]]">
+          <div on-tap="_openTab">
+            <paper-ripple></paper-ripple>
+            <iron-icon icon="icons:[[tab.icon]]"></iron-icon>
+            <span>[[tab.title]]</span>
+          </div>
+        </span>
       </template>
 
       <!-- 2nd separator -->
@@ -143,10 +145,17 @@
          * Element configuration (is, behaviors, properties, observers).
          */
         is: 'x-drawer',
-        behaviors: [
-          Polymer.XChromeTabsBehavior
-        ],
-        properties: {},
+        behaviors: [],
+        properties: {
+
+          /**
+           * List of chrome://.. tabs used in drawer and toolbar.
+           */
+          tabs: {
+            type: Array
+          }
+
+        },
         observers: [],
 
         /**
@@ -183,6 +192,15 @@
          */
         _openWebStore: function () {
           chrome.tabs.create({ url: 'https://chrome.google.com/webstore' });
+        },
+
+        /**
+         * Opens chrome://... page.
+         *
+         * @private
+         */
+        _openTab: function (event) {
+          chrome.tabs.create({ url: 'chrome://' + event.model.tab.page });
         },
 
         /**

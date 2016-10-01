@@ -1,0 +1,97 @@
+<!-- Element -->
+<dom-module id="x-toolbar-customize-dialog">
+  <template>
+
+    <!-- CSS -->
+    <style>
+
+      /* Element */
+      :host {}
+
+      paper-dialog {}
+      paper-dialog h2 {}
+      paper-dialog paper-dialog-scrollable {}
+      paper-dialog paper-dialog-scrollable div.description { color: var(--dark-gray-text-color); font-style: italic; }
+      paper-dialog paper-dialog-scrollable h3 { display: block; margin-bottom: 2px; }
+      paper-dialog paper-dialog-scrollable paper-checkbox { display: block; margin: 3px; }
+      paper-dialog div.buttons {}
+      paper-dialog div.buttons paper-button {}
+
+    </style>
+
+    <!-- Customization dialog -->
+    <paper-dialog id="dialog" entry-animation="scale-up-animation" exit-animation="fade-out-animation">
+
+      <!-- Title -->
+      <h2>Customize your experience</h2>
+
+      <!-- Content -->
+      <paper-dialog-scrollable>
+
+        <!-- Description -->
+        <div class="description">Set visibility of certain sections of the extension.</div>
+
+        <!-- Tabs buttons -->
+        <h3>Chrome tabs:</h3>
+        <template is="dom-repeat" items="{{tabs}}" as="tab">
+          <paper-checkbox checked="{{tab.visible}}">[[tab.title]]</paper-checkbox>
+        </template>
+
+        <!-- Shortcuts -->
+        <h3>Shortcuts:</h3>
+        <template is="dom-repeat" items="{{shortcuts}}" as="shortcut">
+          <paper-checkbox checked="{{shortcut.visible}}">[[shortcut.title]]</paper-checkbox>
+        </template>
+
+      </paper-dialog-scrollable>
+
+      <!-- Buttons -->
+      <div class="buttons">
+        <paper-button dialog-dismiss>Close</paper-button>
+      </div>
+
+    </paper-dialog>
+
+  </template>
+  <script>
+    (function () {
+      'use strict';
+      Polymer({
+
+        /**
+         * Element configuration (is, behaviors, properties, observers).
+         */
+        is: 'x-toolbar-customize-dialog',
+        behaviors: [],
+        properties: {
+
+          /**
+           * List of chrome://.. tabs used in drawer and toolbar.
+           */
+          tabs: {
+            type: Array,
+            notify: true
+          },
+
+          /**
+           * List of app shortcuts.
+           */
+          shortcuts: {
+            type: Array,
+            notify: true
+          }
+
+        },
+        observers: [],
+
+        /**
+         * Opens customization dialog window.
+         */
+        open: function () {
+          this.$.dialog.open();
+        }
+
+      });
+    })();
+  </script>
+</dom-module>
