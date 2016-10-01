@@ -1,4 +1,4 @@
-# Apps for Work New Tab Page
+# G Suite New Tab Page
 
 Chrome New Tab Page replacement for G Suite users inspired by Material Design.
 
