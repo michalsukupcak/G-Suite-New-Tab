@@ -3,6 +3,10 @@
   <template>
     <style>
 
+      div.links {
+        @apply(--layout-horizontal);
+      }
+
       div.link {
         @apply(--layout-horizontal);
         @apply(--layout-center);
@@ -10,10 +14,13 @@
         cursor: pointer;
         padding: 4px 6px;
         position: relative;
+        transition: .2s ease;
       }
       div.link:hover {
-        background: var(--border-color);
-        color: var(--dark-gray-text-color);
+        background: var(--light-gray-text-color);
+      }
+      div.link:hover > a {
+        color: white;
       }
 
       div.link img {
@@ -26,6 +33,7 @@
         color: var(--dark-gray-text-color);
         display: inline-block;
         text-decoration: none;
+        transition: .2s ease;
       }
 
       div.link span {

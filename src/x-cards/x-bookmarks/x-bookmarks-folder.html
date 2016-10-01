@@ -15,7 +15,8 @@
       h1 {
         font-size: 1.6em;
         font-weight: 500;
-        margin-bottom: 2px;
+        margin-bottom: 6px;
+        padding: 0 6px;
       }
 
     </style>
@@ -24,13 +25,15 @@
     <h1>[[title]]</h1>
 
     <!-- Folder links -->
-    <template is="dom-repeat" items="[[links]]" as="link">
-      <div class="link">
-        <paper-ripple></paper-ripple>
-        <img src="chrome://favicon/[[link.url]]">
-        <a href="[[link.url]]">[[link.title]]</a>
-      </div>
-    </template>
+    <div class="links">
+      <template is="dom-repeat" items="[[links]]" as="link">
+        <div class="link">
+          <paper-ripple></paper-ripple>
+          <img src="chrome://favicon/[[link.url]]">
+          <a href="[[link.url]]">[[link.title]]</a>
+        </div>
+      </template>
+    </div>
 
   </template>
   <script>

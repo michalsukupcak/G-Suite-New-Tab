@@ -55,17 +55,13 @@
       }
 
       /* Element */
-      :host {
-        display: block;
-      }
+      :host { display: block; }
 
       /* App panel */
       app-drawer-layout {}
 
       /* App panel - Drawer */
-      app-drawer-layout app-drawer {
-        --app-drawer-width: 312px;
-      }
+      app-drawer-layout app-drawer { --app-drawer-width: 312px; }
 
       /* App panel - Drawer - Drawer content */
       app-drawer-layout app-drawer x-drawer {}
@@ -74,20 +70,16 @@
       app-drawer-layout app-header-layout {}
 
       /* App panel - Content wrapper - Header */
-      app-drawer-layout app-header-layout app-header {
-
-      }
+      app-drawer-layout app-header-layout app-header {}
 
       /* App panel - Content wrapper - Header - Toolbar */
-      app-drawer-layout app-header-layout app-header app-toolbar {
-        color: var(--gray-text-color);
-      }
+      app-drawer-layout app-header-layout app-header app-toolbar { color: var(--gray-text-color); }
 
       /* App panel - Content wrapper - Header - Toolbar - Drawer toggle */
       app-drawer-layout app-header-layout app-header app-toolbar paper-icon-button {}
 
       /* App panel - Content wrapper - Header - Toolbar - App title */
-      app-drawer-layout app-header-layout app-header app-toolbar div[main-title] {}
+      app-drawer-layout app-header-layout app-header app-toolbar div[main-title] { padding: 0 0 0 12px; }
 
       /* App panel - Content wrapper - Header - Toolbar - Toolbar controls */
       app-drawer-layout app-header-layout app-header app-toolbar x-toolbar {}
@@ -96,9 +88,7 @@
       app-drawer-layout app-header-layout main {}
 
       /* App panel - Content wrapper - Content - Shortcuts */
-      app-drawer-layout app-header-layout main x-shortcuts {
-        margin: 32px 0 0 0;
-      }
+      app-drawer-layout app-header-layout main x-shortcuts { margin: 32px 0 0 0; }
 
       /* App panel - Content wrapper - Content - Cards */
       app-drawer-layout app-header-layout main x-cards {}
@@ -124,7 +114,7 @@
             <paper-icon-button icon="icons:menu" drawer-toggle></paper-icon-button>
 
             <!-- App title (empty) -->
-            <div main-title></div>
+            <div main-title>Apps for Work New Tab</div>
 
             <!-- Chrome:// controls -->
             <x-toolbar></x-toolbar>

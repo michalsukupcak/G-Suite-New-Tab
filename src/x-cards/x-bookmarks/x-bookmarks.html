@@ -11,16 +11,23 @@
         display: block;
       }
 
+      x-bookmarks-folder {
+        border-top: 1px dashed #EEE;
+        margin: 12px 0 0 0;
+      }
+
     </style>
 
     <!-- Links -->
-    <template is="dom-repeat" items="[[links]]" as="link">
-      <div class="link">
-        <paper-ripple></paper-ripple>
-        <img src="chrome://favicon/[[link.url]]">
-        <a href="[[link.url]]">[[link.title]]</a>
-      </div>
-    </template>
+    <div class="links">
+      <template is="dom-repeat" items="[[links]]" as="link">
+        <div class="link">
+          <paper-ripple></paper-ripple>
+          <img src="chrome://favicon/[[link.url]]">
+          <a href="[[link.url]]">[[link.title]]</a>
+        </div>
+      </template>
+    </div>
 
     <!-- Folders -->
     <template is="dom-repeat" items="[[folders]]" as="folder">
