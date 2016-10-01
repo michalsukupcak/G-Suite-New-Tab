@@ -1,7 +1,7 @@
 {
-  "name": "app-drawer-template",
+  "name": "g-suite-new-tab",
   "authors": [
-    "The Polymer Authors"
+    "Michal Sukupčák"
   ],
   "private": true,
   "dependencies": {

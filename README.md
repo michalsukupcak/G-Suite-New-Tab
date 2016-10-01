@@ -1,8 +1,8 @@
 # Apps for Work New Tab Page
 
-Chrome New Tab Page replacement for Apps for Work users inspired by Material Design.
+Chrome New Tab Page replacement for G Suite users inspired by Material Design.
 
-![Apps for Work New Tab](https://cloud.githubusercontent.com/assets/5606432/17082398/f41f13aa-517c-11e6-81fe-10ae55964c0c.png)
+![G Suite New Tab](https://cloud.githubusercontent.com/assets/5606432/17082398/f41f13aa-517c-11e6-81fe-10ae55964c0c.png)
 
 You can install the final product for free from the [Chrome Web Store](https://chrome.google.com/webstore/detail/apps-for-work-new-tab/ehpgcagmhpndkmglombjndkdmggkgnge).
 

@@ -110,7 +110,7 @@
             <paper-icon-button icon="icons:menu" drawer-toggle></paper-icon-button>
 
             <!-- App title (empty) -->
-            <div main-title>Apps for Work New Tab</div>
+            <div main-title>G Suite New Tab</div>
 
             <!-- Chrome:// controls -->
             <x-toolbar tabs="{{tabs}}" shortcuts="{{shortcuts}}"></x-toolbar>
@@ -142,8 +142,8 @@
     </iron-signals>
 
     <!-- Browser local storage -->
-    <iron-localstorage name="__appsforworknewtab_tabs" value="{{tabs}}" on-iron-localstorage-load-empty="_tabsEmpty"></iron-localstorage>
-    <iron-localstorage name="__appsforworknewtab_shortcuts" value="{{shortcuts}}" on-iron-localstorage-load-empty="_shortcutsEmpty"></iron-localstorage>
+    <iron-localstorage name="__gsuitenewtab_tabs" value="{{tabs}}" on-iron-localstorage-load-empty="_tabsEmpty"></iron-localstorage>
+    <iron-localstorage name="__gsuitenewtab_shortcuts" value="{{shortcuts}}" on-iron-localstorage-load-empty="_shortcutsEmpty"></iron-localstorage>
 
   </template>
   <script>
