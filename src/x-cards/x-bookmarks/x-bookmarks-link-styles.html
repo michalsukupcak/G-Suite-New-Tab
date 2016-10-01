@@ -5,38 +5,36 @@
 
       div.links {
         @apply(--layout-horizontal);
+        @apply(--layout-wrap);
       }
 
-      div.link {
+      div.links div.link {
         @apply(--layout-horizontal);
         @apply(--layout-center);
         border-radius: 3px;
         cursor: pointer;
+        /*min-width: 124px;*/
         padding: 4px 6px;
         position: relative;
         transition: .2s ease;
       }
-      div.link:hover {
-        background: var(--light-gray-text-color);
-      }
-      div.link:hover > a {
-        color: white;
-      }
+      div.links div.link:hover { background: var(--light-gray-text-color); }
+      div.links div.link:hover > a { color: white; }
 
-      div.link img {
+      div.links div.link img {
         margin: 0 8px 0 0;
         height: 16px;
         width: 16px;
       }
 
-      div.link a {
+      div.links div.link a {
         color: var(--dark-gray-text-color);
         display: inline-block;
         text-decoration: none;
         transition: .2s ease;
       }
 
-      div.link span {
+      div.links div.link span {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
