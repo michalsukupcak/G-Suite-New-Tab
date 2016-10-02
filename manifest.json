@@ -14,8 +14,8 @@
   "permissions": [
     "bookmarks",
     "chrome://favicon/",
-    "identity",
-    "management",
-    "tabs"
+    "history",
+    "tabs",
+    "topSites"
   ]
 }
