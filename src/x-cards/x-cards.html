@@ -20,19 +20,27 @@
         box-sizing: border-box;
         color: #666;
         margin: 12px;
-        width: 80%;
         --paper-card-header: {
           border-bottom: 1px solid var(--divider-color);
         }
       }
+      paper-card.dashboard { width: 256px; }
+      paper-card.bookmarks { width: calc(90% - 256px); }
 
       /* Card wrapper - Card content */
       paper-card div.card-content {}
 
     </style>
 
+    <!-- Dashboard -->
+    <paper-card heading="Dashboard" class="dashboard">
+      <div class="card-content">
+        <x-dashboard></x-dashboard>
+      </div>
+    </paper-card>
+
     <!-- Bookmarks -->
-    <paper-card heading="Bookmarks">
+    <paper-card heading="Bookmarks" class="bookmarks">
       <div class="card-content">
         <x-bookmarks></x-bookmarks>
       </div>

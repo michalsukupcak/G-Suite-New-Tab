@@ -1,0 +1,156 @@
+<!-- Element -->
+<dom-module id="x-dashboard">
+  <template>
+
+    <!-- CSS -->
+    <style>
+
+      /* Element */
+      :host {
+        display: block;
+      }
+
+      div.clock {
+        font-size: 4em;
+        font-weight: 300;
+      }
+
+      hr {
+        border: none;
+        border-top: 1px dashed #EEE;
+        margin: 16px 0;
+      }
+
+      div.day-of-week {
+        font-size: 1.8em;
+        font-weight: 300;
+      }
+
+      div.date {
+        font-size: 1.8em;
+        font-weight: 300;
+      }
+
+      h1 {
+        font-size: 1.4em;
+        margin: 0 6px 6px 6px;
+      }
+
+      div.sites {}
+
+      div.sites a {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        border-radius: 3px;
+        box-sizing: border-box;
+        color: var(--darker-gray-text-color);
+        padding: 4px 6px;
+        text-decoration: none;
+        transition: .2s ease;
+      }
+      div.sites a:hover { background: var(--light-gray-text-color); color: white; }
+
+      div.sites a img {
+        margin: 0 6px 0 0;
+      }
+
+      div.sites a span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+    </style>
+
+    <!--<div class="clock">13:59</div>-->
+    <!--<div class="day-of-week">Monday</div>-->
+    <!--<div class="date">31nd September 2016</div>-->
+
+    <!--<hr>-->
+
+    <!-- Recently visited -->
+    <h1>Recently visited</h1>
+    <div class="sites">
+      <template is="dom-repeat" items="[[recentlyVisitedSites]]" as="site">
+        <a href="[[site.url]]">
+          <img src="chrome://favicon/[[site.url]]">
+          <span>[[site.title]]</span>
+        </a>
+      </template>
+    </div>
+
+    <!-- Separator -->
+    <hr>
+
+    <!-- Frequently visited -->
+    <h1>Frequently visited</h1>
+    <div class="sites">
+      <template is="dom-repeat" items="[[topSites]]" as="site">
+        <a href="[[site.url]]">
+          <img src="chrome://favicon/[[site.url]]">
+          <span>[[site.title]]</span>
+        </a>
+      </template>
+    </div>
+
+  </template>
+  <script>
+    (function () {
+      'use strict';
+      Polymer({
+
+        /**
+         * Element configuration (is, behaviors, properties, observers).
+         */
+        is: 'x-dashboard',
+        behaviors: [],
+        properties: {
+
+          /**
+           * List of last recently visited sites.
+           */
+          recentlyVisitedSites: {
+            type: Array,
+            value: function () {
+              return [];
+            }
+          },
+
+          /**
+           * List of top visited sites.
+           */
+          topSites: {
+            type: Array,
+            value: function () {
+              return [];
+            }
+          }
+
+        },
+        observers: [],
+
+        ready: function () {
+
+          // Get last 5 visited sites from chrome.history API
+          chrome.history.search({ text: '', maxResults: 5 }, function (results) {
+            results.forEach(function (site) {
+              this.push('recentlyVisitedSites', site);
+            }.bind(this));
+          }.bind(this));
+
+          // Get top 10 frequent sites from chrome.topSites API
+          chrome.topSites.get(function (topSites) {
+            var i = 0;
+            topSites.forEach(function (site) {
+              if (i < 10) {
+                this.push('topSites', site);
+                i++;
+              }
+            }.bind(this));
+          }.bind(this));
+        }
+
+      });
+    })();
+  </script>
+</dom-module>
