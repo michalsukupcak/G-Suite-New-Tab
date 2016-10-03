@@ -132,19 +132,23 @@
         ready: function () {
 
           // Get last 5 visited sites from chrome.history API
-          chrome.history.search({ text: '', maxResults: 5 }, function (results) {
+          chrome.history.search({ text: '', maxResults: 10 }, function (results) {
+            var i = 0;
             results.forEach(function (site) {
-              this.push('recentlyVisitedSites', site);
+              if (site.title.length > 0 && i < 5) {
+                this.push('recentlyVisitedSites', site);
+                i++;
+              }
             }.bind(this));
           }.bind(this));
 
           // Get top 10 frequent sites from chrome.topSites API
           chrome.topSites.get(function (topSites) {
-            var i = 0;
+            var j = 0;
             topSites.forEach(function (site) {
-              if (i < 10) {
+              if (j < 10) {
                 this.push('topSites', site);
-                i++;
+                j++;
               }
             }.bind(this));
           }.bind(this));
