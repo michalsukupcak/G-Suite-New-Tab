@@ -29,6 +29,7 @@
 <link rel="import" href="x-cards/x-dashboard/x-dashboard.html">
 <link rel="import" href="x-cards/x-cards.html">
 <link rel="import" href="x-drawer/x-drawer.html">
+<link rel="import" href="x-search/x-search.html">
 <link rel="import" href="x-shortcuts/x-shortcuts.html">
 <link rel="import" href="x-toolbar/x-toolbar-customize-dialog.html">
 <link rel="import" href="x-toolbar/x-toolbar.html">
@@ -90,6 +91,14 @@
       /* App panel - Content wrapper - Content - Cards */
       app-drawer-layout app-header-layout main x-cards {}
 
+      /* Changelog dialog */
+      paper-dialog {}
+      paper-dialog h2 {}
+      paper-dialog paper-dialog-scrollable {}
+      paper-dialog paper-dialog-scrollable a { color: var(--primary-color)}
+      paper-dialog div.buttons {}
+      paper-dialog div.buttons paper-button {}
+
     </style>
 
     <!-- App layout -->
@@ -111,16 +120,25 @@
             <paper-icon-button icon="icons:menu" drawer-toggle></paper-icon-button>
 
             <!-- App title (empty) -->
-            <div main-title>G Suite New Tab</div>
+            <div main-title></div>
 
             <!-- Chrome:// controls -->
-            <x-toolbar tabs="{{tabs}}" shortcuts="{{shortcuts}}"></x-toolbar>
+            <x-toolbar
+              show-search="{{showSearch}}"
+              tabs="{{tabs}}"
+              shortcuts="{{shortcuts}}">
+            </x-toolbar>
 
           </app-toolbar>
         </app-header>
 
         <!-- Content -->
         <main id="content">
+
+          <!-- Search bar -->
+          <template is="dom-if" if="[[showSearch]]">
+            <x-search></x-search>
+          </template>
 
           <!-- Shortcuts -->
           <x-shortcuts shortcuts="{{shortcuts}}"></x-shortcuts>
@@ -134,6 +152,23 @@
 
     </app-drawer-layout>
 
+    <paper-dialog id="changelog" modal>
+      <h2>What's New</h2>
+      <paper-dialog-scrollable>
+        G Suite New Tab extension just got updated! Highlights:<br>
+        <br>
+        * [New] "Google" logo and search bar (NOTE: Can be disabled in Customize Extension) overflow menu<br>
+        * [New] Meet app shortcut<br>
+        * [Fix] Hangouts link works again<br>
+        <br>
+        Full changelog: <a href="https://chrome.google.com/webstore/detail/g-suite-new-tab/ehpgcagmhpndkmglombjndkdmggkgnge">Webstore</a><br>
+        Source code: <a href="https://github.com/michalsukupcak/G-Suite-New-Tab" target="_blank">Github</a><br>
+      </paper-dialog-scrollable>
+      <div class="buttons">
+       <paper-button dialog-dismiss>Close</paper-button>
+      </div>
+    </paper-dialog>
+
     <!-- Toast -->
     <paper-toast id="toast"></paper-toast>
 
@@ -145,6 +180,7 @@
     <!-- Browser local storage -->
     <iron-localstorage name="__gsuitenewtab_tabs" value="{{tabs}}" on-iron-localstorage-load-empty="_tabsEmpty"></iron-localstorage>
     <iron-localstorage name="__gsuitenewtab_shortcuts" value="{{shortcuts}}" on-iron-localstorage-load-empty="_shortcutsEmpty"></iron-localstorage>
+    <iron-localstorage name="__gsuitenewtab_showsearch" value="{{showSearch}}" on-iron-localstorage-load-empty="_showSearchEmpty"></iron-localstorage>
 
   </template>
   <script>
@@ -156,8 +192,15 @@
          * Element configuration (is, behaviors, properties, observers).
          */
         is: 'x-app',
-        behaviors: [],
         properties: {
+
+          /**
+           * Current application version.
+           */
+          APP_VERSION: {
+            type: Number,
+            value: 3
+          },
 
           /**
            * List of chrome://.. tabs used in drawer and toolbar.
@@ -171,16 +214,32 @@
            */
           shortcuts: {
             type: Array
+          },
+
+          /**
+           * Search box visibility toggle.
+           */
+          showSearch: {
+            type: Boolean
           }
 
         },
-        observers: [],
 
         /**
+         * Check app version and clear storage if new version is detected.
+         *
          * Attach scroll observer on document when element is ready, monitor scrollTop value and change toolbar
          * background (default color when scrollTop is 0, lighter (closed to white) when scrollTop is more than 0).
          */
         ready: function () {
+
+          var version = '__gsuitenewtab_version_check_' + this.APP_VERSION;
+          if (!window.localStorage.getItem(version)) {
+            window.localStorage.clear();
+            window.localStorage.setItem(version, true);
+            this.$.changelog.open();
+          }
+
           document.addEventListener('scroll', function () {
             if (document.body.scrollTop > 0) {
               if (this.$.toolbar.style.backgroundColor !== '#FAFAFA') {
@@ -192,6 +251,7 @@
               }
             }
           }.bind(this));
+
         },
 
         /**
@@ -218,19 +278,26 @@
         _shortcutsEmpty: function () {
           this.set('shortcuts', [
             { type: 'web', icon: 'admin', title: 'Admin', page: 'https://admin.google.com/AdminHome', visible: true },
-            { type: 'extension', icon: 'hangouts', title: 'Hangouts', page: 'knipolnnllmklapflnccelgolnpehhpl', visible: true },
+            { type: 'web', icon: 'meet', title: 'Meet', page: 'https://meet.google.com', visible: true },
+            { type: 'web', icon: 'hangouts', title: 'Hangouts', page: 'https://hangouts.google.com', visible: true },
             { type: 'web', icon: 'drive', title: 'Drive', page: 'https://drive.google.com/drive/my-drive', visible: true },
             { type: 'web', icon: 'keep', title: 'Keep', page: 'https://keep.google.com/', visible: true },
             { type: 'web', icon: 'calendar', title: 'Calendar', page: 'https://calendar.google.com/calendar/render', visible: true },
             { type: 'web', icon: 'inbox', title: 'Inbox', page: 'https://inbox.google.com', visible: true },
             { type: 'web', icon: 'my-account', title: 'My Account', page: 'https://myaccount.google.com/', visible: true },
             { type: 'web', icon: 'groups', title: 'Groups', page: 'https://groups.google.com/a/wds.sk/forum/#!myforums', visible: true },
-            { type: 'web', icon: 'sites', title: 'Sites', page: 'https://sites.google.com/new', visible: true },
             { type: 'web', icon: 'gmail', title: 'Gmail', page: 'https://mail.google.com/mail/u/0/#inbox', visible: true },
             { type: 'web', icon: 'plus', title: 'Google+', page: 'https://plus.google.com/', visible: true },
             { type: 'web', icon: 'gitlab', title: 'Gitlab', page: 'https://gitlab.wds.sk/', visible: true },
             { type: 'web', icon: 'youtrack', title: 'Youtrack', page: 'https://youtrack.wds.sk/', visible: true }
           ]);
+        },
+
+        /**
+         * If this.searchBox variable is empty, set it to true by default.
+         */
+        _showSearchEmpty: function () {
+          this.set('showSearch', true);
         },
 
         /**

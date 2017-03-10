@@ -44,7 +44,6 @@
          * Element configuration (is, behaviors, properties, observers).
          */
         is: 'x-bookmarks',
-        behaviors: [],
         properties: {
 
           links: {
@@ -58,7 +57,6 @@
           }
 
         },
-        observers: [],
 
         ready: function () {
           chrome.bookmarks.getTree(function (bookmarks) {

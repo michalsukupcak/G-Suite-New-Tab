@@ -1,31 +1,3 @@
-<!-- Polymer -->
-<link rel="import" href="../../bower_components/polymer/polymer.html">
-
-<!-- App elements -->
-<!-- App templating elements go here -->
-
-<!-- Iron elements -->
-<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
-
-<!-- Paper elements -->
-<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../../bower_components/paper-input/paper-input.html">
-
-<!-- Neon elements -->
-<!-- Animation elements go here -->
-
-<!-- 3rd party elements -->
-<!-- Additional 3rd party elements go here -->
-
-<!-- Shared elements -->
-<!-- Elements from folder /shared go here -->
-
-<!-- Style elements -->
-<!-- Elements from folder /styles go here -->
-
-<!-- Custom elements -->
-<!-- Specific elements extending features of current element go here -->
-
 <!-- Element -->
 <dom-module id="x-search">
   <template>
@@ -40,47 +12,58 @@
       }
 
       /* Google logo */
-      img {
+      div.logo {}
+      div.logo img {
         display: block;
+        margin: 96px auto 6px auto;
+        max-width: 412px;
+      }
+
+      /* Logo subtitle */
+      div.subtitle {
+        font-size: 1.4em;
         margin: auto auto 32px auto;
-        max-width: 256px;
+        max-width: 412px;
+        text-align: right;
       }
 
       /* Input wrapper */
-      div {
+      div.search {
         @apply(--layout-horizontal);
         @apply(--shadow-elevation-2dp);
         background: white;
         box-sizing: border-box;
         border-radius: 3px;
         margin: auto;
+        max-width: 768px;
         padding: 8px 20px 5px 20px;
-        width: 768px;
       }
 
       /* Input wrapper - Icon button */
-      div paper-icon-button {}
+      div.search paper-icon-button {}
 
       /* Input wrapper - Search input */
-      div paper-input {
+      div.search input {
         @apply(--layout-flex);
+        background: transparent;
+        border: none;
+        color: #666;
+        font-size: 1.4em;
         margin: 0 12px;
-        --paper-input-container-underline: {
-          display: none;
-        }
+        outline: none;
       }
 
     </style>
 
     <!-- Google logo -->
-    <img src="../../images/google-logo.png">
+    <div class="logo"><img src="../../images/google-logo.png"></div>
+    <div class="subtitle">G Suite New Tab</div>
 
     <!-- Search input -->
-    <!--<div>-->
-      <!--<paper-icon-button icon="icons:search" on-tap="_focusOmnibox"></paper-icon-button>-->
-      <!--<paper-input no-label-float on-keyup="_focusOmnibox"></paper-input>-->
-      <!--<paper-icon-button icon="icons:close"></paper-icon-button>-->
-    <!--</div>-->
+    <div class="search">
+      <paper-icon-button icon="icons:search"></paper-icon-button>
+      <input type="text" id="search" on-keyup="_searchKeyUp">
+    </div>
 
   </template>
   <script>
@@ -92,17 +75,17 @@
          * Element configuration (is, behaviors, properties, observers).
          */
         is: 'x-search',
-        behaviors: [],
-        properties: {},
-        observers: [],
 
         /**
-         * Moves focus from search input into Chrome's omnibox.
+         * Redirect user to new tab with search query from search input.
          *
+         * @param event
          * @private
          */
-        _focusOmnibox: function () {
-
+        _searchKeyUp: function (event) {
+          if (event.keyCode === 13) {
+            chrome.tabs.create({ url: 'https://google.com/search?q=' + this.$.search.value });
+          }
         }
 
       });

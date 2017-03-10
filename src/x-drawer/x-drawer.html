@@ -18,13 +18,10 @@
         background: #EEE;
         border-bottom: 1px solid var(--border-color);
         margin: 0 0 12px 0;
-        padding: 12px 24px;
+        padding: 24px;
       }
-
-      /* Header - Chrome logo */
-      header img {
-        max-width: 100%;
-      }
+      header div.g-suite { font-size: 2.6em; }
+      header div.new-tab {}
 
       /* Content */
       main {}
@@ -64,7 +61,8 @@
 
     <!-- Drawer header -->
     <header>
-      <img src="../../images/g-suite.png">
+      <div class="g-suite">G Suite</div>
+      <div class="new-tab">New Tab Chrome Extension</div>
     </header>
 
     <!-- Drawer content -->
@@ -145,7 +143,6 @@
          * Element configuration (is, behaviors, properties, observers).
          */
         is: 'x-drawer',
-        behaviors: [],
         properties: {
 
           /**
@@ -156,7 +153,6 @@
           }
 
         },
-        observers: [],
 
         /**
          * Opens new tab.

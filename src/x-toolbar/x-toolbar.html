@@ -73,7 +73,12 @@
     </paper-menu-button>
 
     <!-- Customize extension dialog -->
-    <x-toolbar-customize-dialog id="customizeDialog" tabs="{{tabs}}" shortcuts="{{shortcuts}}"></x-toolbar-customize-dialog>
+    <x-toolbar-customize-dialog
+      id="customizeDialog"
+      tabs="{{tabs}}"
+      shortcuts="{{shortcuts}}"
+      show-search="{{showSearch}}">
+    </x-toolbar-customize-dialog>
 
   </template>
   <script>
@@ -85,7 +90,6 @@
          * Element configuration (is, behaviors, properties, observers).
          */
         is: 'x-toolbar',
-        behaviors: [],
         properties: {
 
           /**
@@ -102,10 +106,17 @@
           shortcuts: {
             type: Array,
             notify: true
+          },
+
+          /**
+           * Search box visibility toggle.
+           */
+          showSearch: {
+            type: Boolean,
+            notify: true
           }
 
         },
-        observers: [],
 
         /**
          * Opens chrome://... page.

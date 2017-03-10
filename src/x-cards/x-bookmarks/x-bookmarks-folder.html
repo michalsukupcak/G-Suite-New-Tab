@@ -45,7 +45,6 @@
          * Element configuration (is, behaviors, properties, observers).
          */
         is: 'x-bookmarks-folder',
-        behaviors: [],
         properties: {
 
           title: {
@@ -63,7 +62,6 @@
           }
 
         },
-        observers: [],
 
         _childrenChanged: function (value) {
           value.forEach(function (child) {

@@ -31,6 +31,10 @@
         <!-- Description -->
         <div class="description">Set visibility of certain sections of the extension.</div>
 
+        <!-- Search box -->
+        <h3>Search box</h3>
+        <paper-checkbox checked="{{showSearch}}">Search box with Google logo</paper-checkbox>
+
         <!-- Tabs buttons -->
         <h3>Chrome tabs:</h3>
         <template is="dom-repeat" items="{{tabs}}" as="tab">
@@ -62,7 +66,6 @@
          * Element configuration (is, behaviors, properties, observers).
          */
         is: 'x-toolbar-customize-dialog',
-        behaviors: [],
         properties: {
 
           /**
@@ -79,10 +82,17 @@
           shortcuts: {
             type: Array,
             notify: true
+          },
+
+          /**
+           * Search box visibility toggle.
+           */
+          showSearch: {
+            type: Boolean,
+            notify: true
           }
 
         },
-        observers: [],
 
         /**
          * Opens customization dialog window.
