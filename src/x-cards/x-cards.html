@@ -24,6 +24,11 @@
           border-bottom: 1px solid var(--divider-color);
         }
       }
+      paper-card.flat {
+        background: transparent;
+        border: none !important;
+        box-shadow: none !important;
+      }
       paper-card.dashboard { width: 256px; }
       paper-card.bookmarks { width: calc(90% - 256px); }
 
@@ -33,14 +38,14 @@
     </style>
 
     <!-- Dashboard -->
-    <paper-card heading="Dashboard" class="dashboard">
+    <paper-card heading="Dashboard" class$="[[_getCardClass('dashboard', flatStyle)]]">
       <div class="card-content">
         <x-dashboard></x-dashboard>
       </div>
     </paper-card>
 
     <!-- Bookmarks -->
-    <paper-card heading="Bookmarks" class="bookmarks">
+    <paper-card heading="Bookmarks" class$="[[_getCardClass('bookmarks', flatStyle)]]">
       <div class="card-content">
         <x-bookmarks></x-bookmarks>
       </div>
@@ -55,7 +60,30 @@
         /**
          * Element configuration (is, behaviors, properties, observers).
          */
-        is: 'x-cards'
+        is: 'x-cards',
+        properties: {
+
+          /**
+           * Enable flat style for Dashboard and Bookmarks cards.
+           */
+          flatStyle: {
+            type: Boolean,
+            notify: true
+          }
+
+        },
+
+        /**
+         * Returns the class for paper-card element, depending of flatStyle value.
+         *
+         * @param cardClass
+         * @param flatStyle
+         * @returns {*}
+         * @private
+         */
+        _getCardClass: function (cardClass, flatStyle) {
+          return cardClass + (flatStyle ? ' flat' : '');
+        }
 
       });
     })();

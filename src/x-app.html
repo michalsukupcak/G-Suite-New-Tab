@@ -124,9 +124,10 @@
 
             <!-- Chrome:// controls -->
             <x-toolbar
+              flat-style="{{flatStyle}}"
               show-search="{{showSearch}}"
-              tabs="{{tabs}}"
-              shortcuts="{{shortcuts}}">
+              shortcuts="{{shortcuts}}"
+              tabs="{{tabs}}">
             </x-toolbar>
 
           </app-toolbar>
@@ -144,7 +145,7 @@
           <x-shortcuts shortcuts="{{shortcuts}}"></x-shortcuts>
 
           <!-- Cards -->
-          <x-cards></x-cards>
+          <x-cards flat-style="[[flatStyle]]"></x-cards>
 
         </main>
 
@@ -157,9 +158,9 @@
       <paper-dialog-scrollable>
         G Suite New Tab extension just got updated! Highlights:<br>
         <br>
-        * [New] "Google" logo and search bar (NOTE: Can be disabled in Customize Extension) overflow menu<br>
-        * [New] Meet app shortcut<br>
-        * [Fix] Hangouts link works again<br>
+        * [New] Cloud Search added to the list of shortcuts<br>
+        * [New] Ability to change Dashboard and Bookmark style for a more flat design (no background, border and shadow)<br>
+        * [Update] Dashboard and Bookmarks cards got a few design tweaks<br>
         <br>
         Full changelog: <a href="https://chrome.google.com/webstore/detail/g-suite-new-tab/ehpgcagmhpndkmglombjndkdmggkgnge">Webstore</a><br>
         Source code: <a href="https://github.com/michalsukupcak/G-Suite-New-Tab" target="_blank">Github</a><br>
@@ -178,9 +179,10 @@
     </iron-signals>
 
     <!-- Browser local storage -->
-    <iron-localstorage name="__gsuitenewtab_tabs" value="{{tabs}}" on-iron-localstorage-load-empty="_tabsEmpty"></iron-localstorage>
+    <iron-localstorage name="__gsuitenewtab_flatstyle" value="{{flatStyle}}" on-iron-localstorage-load-empty="_flatStyleEmpty"></iron-localstorage>
     <iron-localstorage name="__gsuitenewtab_shortcuts" value="{{shortcuts}}" on-iron-localstorage-load-empty="_shortcutsEmpty"></iron-localstorage>
     <iron-localstorage name="__gsuitenewtab_showsearch" value="{{showSearch}}" on-iron-localstorage-load-empty="_showSearchEmpty"></iron-localstorage>
+    <iron-localstorage name="__gsuitenewtab_tabs" value="{{tabs}}" on-iron-localstorage-load-empty="_tabsEmpty"></iron-localstorage>
 
   </template>
   <script>
@@ -203,10 +205,11 @@
           },
 
           /**
-           * List of chrome://.. tabs used in drawer and toolbar.
+           * Enable flat style for Dashboard and Bookmarks cards.
            */
-          tabs: {
-            type: Array
+          flatStyle: {
+            type: Boolean,
+            notify: true
           },
 
           /**
@@ -221,6 +224,13 @@
            */
           showSearch: {
             type: Boolean
+          },
+
+          /**
+           * List of chrome://.. tabs used in drawer and toolbar.
+           */
+          tabs: {
+            type: Array
           }
 
         },
@@ -255,19 +265,26 @@
         },
 
         /**
-         * If this.tabs variable is empty, set new default value for the array.
+         * If this.flatStyle variable is empty, set new default value to false.
          *
          * @private
          */
-        _tabsEmpty: function () {
-          this.set('tabs', [
-            { page: 'apps', icon: 'icons:apps', title: 'Apps', visible: true },
-            { page: 'bookmarks', icon: 'icons:star', title: 'Bookmarks', visible: true },
-            { page: 'downloads', icon: 'icons:file-download', title: 'Downloads', visible: true },
-            { page: 'history', icon: 'icons:history', title: 'History', visible: true },
-            { page: 'extensions', icon: 'icons:extension', title: 'Extensions', visible: true },
-            { page: 'flags', icon: 'icons:flag', title: 'Flags', visible: true }
-          ]);
+        _flatStyleEmpty: function () {
+          this.set('flatStyle', false);
+        },
+
+        /**
+         * Handler for iron-signal-toast event, opens paper-toast with a message from event.
+         *
+         * @param event
+         * @private
+         */
+        _openToast: function (event) {
+          if (this.$.toast.opened) {
+            this.$.toast.hide();
+          }
+          this.$.toast.text = event.detail;
+          this.$.toast.show();
         },
 
         /**
@@ -284,6 +301,7 @@
             { type: 'web', icon: 'keep', title: 'Keep', page: 'https://keep.google.com/', visible: true },
             { type: 'web', icon: 'calendar', title: 'Calendar', page: 'https://calendar.google.com/calendar/render', visible: true },
             { type: 'web', icon: 'inbox', title: 'Inbox', page: 'https://inbox.google.com', visible: true },
+            { type: 'web', icon: 'cloud', title: 'Cloud Search', page: 'https://cloudsearch.google.com/cloudsearch', visible: true },
             { type: 'web', icon: 'my-account', title: 'My Account', page: 'https://myaccount.google.com/', visible: true },
             { type: 'web', icon: 'groups', title: 'Groups', page: 'https://groups.google.com/a/wds.sk/forum/#!myforums', visible: true },
             { type: 'web', icon: 'gmail', title: 'Gmail', page: 'https://mail.google.com/mail/u/0/#inbox', visible: true },
@@ -301,17 +319,19 @@
         },
 
         /**
-         * Handler for iron-signal-toast event, opens paper-toast with a message from event.
+         * If this.tabs variable is empty, set new default value for the array.
          *
-         * @param event
          * @private
          */
-        _openToast: function (event) {
-          if (this.$.toast.opened) {
-            this.$.toast.hide();
-          }
-          this.$.toast.text = event.detail;
-          this.$.toast.show();
+        _tabsEmpty: function () {
+          this.set('tabs', [
+            { page: 'apps', icon: 'icons:apps', title: 'Apps', visible: true },
+            { page: 'bookmarks', icon: 'icons:star', title: 'Bookmarks', visible: true },
+            { page: 'downloads', icon: 'icons:file-download', title: 'Downloads', visible: true },
+            { page: 'history', icon: 'icons:history', title: 'History', visible: true },
+            { page: 'extensions', icon: 'icons:extension', title: 'Extensions', visible: true },
+            { page: 'flags', icon: 'icons:flag', title: 'Flags', visible: true }
+          ]);
         }
 
       });

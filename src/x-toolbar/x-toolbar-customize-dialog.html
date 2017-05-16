@@ -8,12 +8,14 @@
       /* Element */
       :host {}
 
-      paper-dialog {}
+      paper-dialog { width: 512px; }
       paper-dialog h2 {}
       paper-dialog paper-dialog-scrollable {}
       paper-dialog paper-dialog-scrollable div.description { color: var(--dark-gray-text-color); font-style: italic; }
       paper-dialog paper-dialog-scrollable h3 { display: block; margin-bottom: 2px; }
       paper-dialog paper-dialog-scrollable paper-checkbox { display: block; margin: 3px; }
+      paper-dialog paper-dialog-scrollable div.columns { @apply(--layout-horizontal); @apply(--layout-wrap); }
+      paper-dialog paper-dialog-scrollable div.columns paper-checkbox { box-sizing: border-box; width: 30%; }
       paper-dialog div.buttons {}
       paper-dialog div.buttons paper-button {}
 
@@ -29,23 +31,31 @@
       <paper-dialog-scrollable>
 
         <!-- Description -->
-        <div class="description">Set visibility of certain sections of the extension.</div>
+        <div class="description">Customize settings of the extension to match your needs and preferences.</div>
 
         <!-- Search box -->
         <h3>Search box</h3>
         <paper-checkbox checked="{{showSearch}}">Search box with Google logo</paper-checkbox>
 
+        <!-- Search box -->
+        <h3>Flat style</h3>
+        <paper-checkbox checked="{{flatStyle}}">Use flat style for Dashboard and Bookmarks cards</paper-checkbox>
+
         <!-- Tabs buttons -->
         <h3>Chrome tabs:</h3>
-        <template is="dom-repeat" items="{{tabs}}" as="tab">
-          <paper-checkbox checked="{{tab.visible}}">[[tab.title]]</paper-checkbox>
-        </template>
+        <div class="columns">
+          <template is="dom-repeat" items="{{tabs}}" as="tab">
+            <paper-checkbox checked="{{tab.visible}}">[[tab.title]]</paper-checkbox>
+          </template>
+        </div>
 
         <!-- Shortcuts -->
         <h3>Shortcuts:</h3>
-        <template is="dom-repeat" items="{{shortcuts}}" as="shortcut">
-          <paper-checkbox checked="{{shortcut.visible}}">[[shortcut.title]]</paper-checkbox>
-        </template>
+        <div class="columns">
+          <template is="dom-repeat" items="{{shortcuts}}" as="shortcut">
+            <paper-checkbox checked="{{shortcut.visible}}">[[shortcut.title]]</paper-checkbox>
+          </template>
+        </div>
 
       </paper-dialog-scrollable>
 
@@ -69,10 +79,10 @@
         properties: {
 
           /**
-           * List of chrome://.. tabs used in drawer and toolbar.
+           * Enable flat style for Dashboard and Bookmarks cards.
            */
-          tabs: {
-            type: Array,
+          flatStyle: {
+            type: Boolean,
             notify: true
           },
 
@@ -89,6 +99,14 @@
            */
           showSearch: {
             type: Boolean,
+            notify: true
+          },
+
+          /**
+           * List of chrome://.. tabs used in drawer and toolbar.
+           */
+          tabs: {
+            type: Array,
             notify: true
           }
 

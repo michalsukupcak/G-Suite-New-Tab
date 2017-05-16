@@ -5,17 +5,19 @@
 
       div.links {
         @apply(--layout-horizontal);
+        @apply(--layout-start-justified);
         @apply(--layout-wrap);
       }
 
       div.links div.link {
         @apply(--layout-horizontal);
         @apply(--layout-center);
-        border-radius: 3px;
+        box-sizing: border-box;
         cursor: pointer;
         padding: 4px 6px;
         position: relative;
         transition: .2s ease;
+        width: 10%;
       }
       div.links div.link:hover { background: var(--light-gray-text-color); }
       div.links div.link:hover > a { color: white; }
@@ -29,8 +31,11 @@
       div.links div.link a {
         color: var(--dark-gray-text-color);
         display: inline-block;
+        overflow: hidden;
         text-decoration: none;
+        text-overflow: ellipsis;
         transition: .2s ease;
+        white-space: nowrap;
       }
 
       div.links div.link span {
@@ -39,6 +44,12 @@
         text-overflow: ellipsis;
       }
 
+      @media (max-width: 1440px) { div.links div.link { width: 12.5%; } }
+      @media (max-width: 1280px) { div.links div.link { width: 20%; } }
+      @media (max-width: 1024px) { div.links div.link { width: 25%; } }
+      @media (max-width: 960px) { div.links div.link { width: 33%; } }
+      @media (max-width: 768px) { div.links div.link { width: 50%; } }
+      @media (max-width: 640px) { div.links div.link { width: 100%; } }
     </style>
   </template>
 </dom-module>

@@ -75,9 +75,10 @@
     <!-- Customize extension dialog -->
     <x-toolbar-customize-dialog
       id="customizeDialog"
-      tabs="{{tabs}}"
+      flat-style="{{flatStyle}}"
       shortcuts="{{shortcuts}}"
-      show-search="{{showSearch}}">
+      show-search="{{showSearch}}"
+      tabs="{{tabs}}">
     </x-toolbar-customize-dialog>
 
   </template>
@@ -93,10 +94,10 @@
         properties: {
 
           /**
-           * List of chrome://.. tabs used in drawer and toolbar.
+           * Enable flat style for Dashboard and Bookmarks cards.
            */
-          tabs: {
-            type: Array,
+          flatStyle: {
+            type: Boolean,
             notify: true
           },
 
@@ -113,6 +114,14 @@
            */
           showSearch: {
             type: Boolean,
+            notify: true
+          },
+
+          /**
+           * List of chrome://.. tabs used in drawer and toolbar.
+           */
+          tabs: {
+            type: Array,
             notify: true
           }
 
