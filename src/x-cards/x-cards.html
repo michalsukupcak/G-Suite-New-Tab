@@ -29,8 +29,8 @@
         border: none !important;
         box-shadow: none !important;
       }
-      paper-card.dashboard { width: 256px; }
-      paper-card.bookmarks { width: calc(90% - 256px); }
+      /*paper-card.dashboard { width: 256px; }*/
+      paper-card.bookmarks {  max-width: 100%; width: 980px; }
 
       /* Card wrapper - Card content */
       paper-card div.card-content {}
@@ -38,11 +38,11 @@
     </style>
 
     <!-- Dashboard -->
-    <paper-card heading="Dashboard" class$="[[_getCardClass('dashboard', flatStyle)]]">
-      <div class="card-content">
-        <x-dashboard></x-dashboard>
-      </div>
-    </paper-card>
+    <!--<paper-card heading="Dashboard" class$="[[_getCardClass('dashboard', flatStyle)]]">-->
+      <!--<div class="card-content">-->
+        <!--<x-dashboard></x-dashboard>-->
+      <!--</div>-->
+    <!--</paper-card>-->
 
     <!-- Bookmarks -->
     <paper-card heading="Bookmarks" class$="[[_getCardClass('bookmarks', flatStyle)]]">

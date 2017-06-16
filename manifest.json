@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "version": "1.7.1",
+  "version": "1.8.0",
   "name": "G Suite New Tab",
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
   "icons": {
@@ -14,8 +14,6 @@
   "permissions": [
     "bookmarks",
     "chrome://favicon/",
-    "history",
-    "tabs",
-    "topSites"
+    "tabs"
   ]
 }

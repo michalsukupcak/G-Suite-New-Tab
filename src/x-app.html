@@ -12,6 +12,7 @@
 <link rel="import" href="../bower_components/iron-signals/iron-signals.html">
 <link rel="import" href="../bower_components/neon-animation/animations/fade-out-animation.html">
 <link rel="import" href="../bower_components/neon-animation/animations/scale-up-animation.html">
+<link rel="import" href="../bower_components/neon-animation/web-animations.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
@@ -105,7 +106,7 @@
     <app-drawer-layout force-narrow>
 
       <!-- Drawer panel -->
-      <app-drawer swipe-open>
+      <app-drawer slot="drawer" swipe-open>
         <x-drawer tabs="{{tabs}}"></x-drawer>
       </app-drawer>
 
@@ -113,7 +114,7 @@
       <app-header-layout id="headerPanel">
 
         <!-- Header -->
-        <app-header effects="waterfall" fixed>
+        <app-header slot="header" effects="waterfall" fixed>
           <app-toolbar id="toolbar">
 
             <!-- Drawer toggle button -->
@@ -158,9 +159,8 @@
       <paper-dialog-scrollable>
         G Suite New Tab extension just got updated! Highlights:<br>
         <br>
-        * [New] Cloud Search added to the list of shortcuts<br>
-        * [New] Ability to change Dashboard and Bookmark style for a more flat design (no background, border and shadow)<br>
-        * [Update] Dashboard and Bookmarks cards got a few design tweaks<br>
+        * [Update] Unified width of Bookmarks card and the Search input.<br>
+        * [Removed] Removed Dashboard section with recent and frequent links (feature was under-used and extension requires fewer permissions).<br>
         <br>
         Full changelog: <a href="https://chrome.google.com/webstore/detail/g-suite-new-tab/ehpgcagmhpndkmglombjndkdmggkgnge">Webstore</a><br>
         Source code: <a href="https://github.com/michalsukupcak/G-Suite-New-Tab" target="_blank">Github</a><br>
@@ -201,7 +201,7 @@
            */
           APP_VERSION: {
             type: Number,
-            value: 4
+            value: 5
           },
 
           /**

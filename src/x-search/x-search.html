@@ -27,23 +27,29 @@
         text-align: right;
       }
 
-      /* Input wrapper */
-      div.search {
+      /* Search wrapper */
+      div.searchWrapper {
+        margin: auto;
+        max-width: 980px;
+        padding: 0 12px;
+        width: 100%;
+      }
+
+      /* Search wrapper - Search wrapper */
+      div.searchWrapper div.search {
         @apply(--layout-horizontal);
         @apply(--shadow-elevation-2dp);
         background: white;
         box-sizing: border-box;
         border-radius: 3px;
-        margin: auto;
-        max-width: 50%;
         padding: 8px 20px 5px 20px;
       }
 
-      /* Input wrapper - Icon button */
-      div.search paper-icon-button {}
+      /* Search wrapper - Search wrapper - Icon button */
+      div.searchWrapper div.search paper-icon-button {}
 
-      /* Input wrapper - Search input */
-      div.search input {
+      /* Search wrapper - Search wrapper - Input */
+      div.searchWrapper div.search input {
         @apply(--layout-flex);
         background: transparent;
         border: none;
@@ -60,9 +66,11 @@
     <div class="subtitle">G Suite New Tab</div>
 
     <!-- Search input -->
-    <div class="search">
-      <paper-icon-button icon="icons:search"></paper-icon-button>
-      <input type="text" id="search" on-keyup="_searchKeyUp">
+    <div class="searchWrapper">
+      <div class="search">
+        <paper-icon-button icon="icons:search"></paper-icon-button>
+        <input type="text" id="search" on-keyup="_searchKeyUp">
+      </div>
     </div>
 
   </template>
