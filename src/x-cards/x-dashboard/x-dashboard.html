@@ -6,84 +6,69 @@
     <style>
 
       /* Element */
-      :host {
-        display: block;
+      :host { display: block; }
+
+      /* Link wrapper */
+      div.wrapper {}
+      div.wrapper section { box-sizing: border-box; }
+      div.wrapper section h1 { font-size: 1.6em; margin: 0 6px 6px 6px; }
+      div.wrapper section div.sites {}
+      div.wrapper section div.sites a { @apply(--layout-horizontal); @apply(--layout-center); border-radius: 3px; box-sizing: border-box; color: var(--darker-gray-text-color); padding: 4px 6px; text-decoration: none; transition: .2s ease; }
+      div.wrapper section div.sites a:hover { background: var(--light-gray-text-color); color: white; }
+      div.wrapper section div.sites a img { margin: 0 6px 0 0; }
+      div.wrapper section div.sites a span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      div.wrapper hr { border: none; border-top: 1px solid var(--divider-color); margin: 12px auto; }
+      div.wrapper div.clear { clear: both; display: none; }
+
+      @media (max-width: 1024px) {
+        div.wrapper section { float: left; width: 50%; }
+        div.wrapper hr { display: none; }
+        div.wrapper div.clear { display: block; }
       }
 
-      div.clock {
-        font-size: 4em;
-        font-weight: 300;
-      }
-
-      hr {
-        border: none;
-        margin: 0 0 24px 0;
-      }
-
-      div.day-of-week {
-        font-size: 1.8em;
-        font-weight: 300;
-      }
-
-      div.date {
-        font-size: 1.8em;
-        font-weight: 300;
-      }
-
-      h1 {
-        font-size: 1.6em;
-        margin: 0 6px 6px 6px;
-      }
-
-      div.sites {}
-
-      div.sites a {
-        @apply(--layout-horizontal);
-        @apply(--layout-center);
-        border-radius: 3px;
-        box-sizing: border-box;
-        color: var(--darker-gray-text-color);
-        padding: 4px 6px;
-        text-decoration: none;
-        transition: .2s ease;
-      }
-      div.sites a:hover { background: var(--light-gray-text-color); color: white; }
-
-      div.sites a img {
-        margin: 0 6px 0 0;
-      }
-
-      div.sites a span {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+      @media (max-width: 300px) {
+        div.wrapper section { float: none; width: auto; }
+        div.wrapper hr { display: block }
+        div.wrapper div.clear { display: none; }
       }
 
     </style>
 
-    <!-- Recently visited -->
-    <h1>Recently visited</h1>
-    <div class="sites">
-      <template is="dom-repeat" items="[[recentlyVisitedSites]]" as="site">
-        <a href="[[site.url]]">
-          <img src="chrome://favicon/[[site.url]]">
-          <span>[[site.title]]</span>
-        </a>
-      </template>
-    </div>
+    <!-- Wrapper -->
+    <div class="wrapper">
 
-    <!-- Separator -->
-    <hr>
+      <!-- Recently visited -->
+      <section>
+        <h1>Recently visited</h1>
+        <div class="sites">
+          <template is="dom-repeat" items="[[recentlyVisitedSites]]" as="site">
+            <a href="[[site.url]]">
+              <img src="chrome://favicon/[[site.url]]">
+              <span>[[site.title]]</span>
+            </a>
+          </template>
+        </div>
+      </section>
 
-    <!-- Frequently visited -->
-    <h1>Frequently visited</h1>
-    <div class="sites">
-      <template is="dom-repeat" items="[[topSites]]" as="site">
-        <a href="[[site.url]]">
-          <img src="chrome://favicon/[[site.url]]">
-          <span>[[site.title]]</span>
-        </a>
-      </template>
+      <!-- Separator -->
+      <hr>
+
+      <!-- Frequently visited -->
+      <section>
+        <h1>Frequently visited</h1>
+        <div class="sites">
+          <template is="dom-repeat" items="[[topSites]]" as="site">
+            <a href="[[site.url]]">
+              <img src="chrome://favicon/[[site.url]]">
+              <span>[[site.title]]</span>
+            </a>
+          </template>
+        </div>
+      </section>
+
+      <!-- Clear -->
+      <div class="clear"></div>
+
     </div>
 
   </template>

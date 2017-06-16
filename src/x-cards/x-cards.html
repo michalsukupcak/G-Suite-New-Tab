@@ -6,43 +6,30 @@
     <style>
 
       /* Element */
-      :host {
-        @apply(--layout-horizontal);
-        @apply(--layout-center-justified);
-        @apply(--layout-wrap);
-        margin: auto;
-        padding: 16px 0;
-        width: 100%;
-      }
+      :host { @apply(--layout-horizontal); @apply(--layout-center-justified); @apply(--layout-wrap); margin: auto; padding: 16px 0; width: 100%; }
 
       /* Card wrapper */
-      paper-card {
-        box-sizing: border-box;
-        color: #666;
-        margin: 12px;
-        --paper-card-header: {
-          border-bottom: 1px solid var(--divider-color);
-        }
-      }
-      paper-card.flat {
-        background: transparent;
-        border: none !important;
-        box-shadow: none !important;
-      }
-      /*paper-card.dashboard { width: 256px; }*/
-      paper-card.bookmarks {  max-width: 100%; width: 980px; }
+      paper-card { box-sizing: border-box; color: #666; margin: 12px; --paper-card-header: { border-bottom: 1px solid var(--divider-color); } }
+      paper-card.flat { background: transparent; border: none !important; box-shadow: none !important; }
+      paper-card.dashboard { margin-left: 24px; width: 244px; }
+      paper-card.bookmarks { margin-right: 24px; width: 688px; }
 
       /* Card wrapper - Card content */
       paper-card div.card-content {}
 
+      @media (max-width: 1024px) {
+        paper-card.dashboard { margin: 12px; width: 100%; }
+        paper-card.bookmarks { margin: 12px; width: 100%; }
+      }
+
     </style>
 
     <!-- Dashboard -->
-    <!--<paper-card heading="Dashboard" class$="[[_getCardClass('dashboard', flatStyle)]]">-->
-      <!--<div class="card-content">-->
-        <!--<x-dashboard></x-dashboard>-->
-      <!--</div>-->
-    <!--</paper-card>-->
+    <paper-card heading="Dashboard" class$="[[_getCardClass('dashboard', flatStyle)]]">
+      <div class="card-content">
+        <x-dashboard></x-dashboard>
+      </div>
+    </paper-card>
 
     <!-- Bookmarks -->
     <paper-card heading="Bookmarks" class$="[[_getCardClass('bookmarks', flatStyle)]]">

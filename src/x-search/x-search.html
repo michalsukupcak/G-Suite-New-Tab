@@ -14,21 +14,26 @@
       /* Google logo */
       div.logo {}
       div.logo img {
+        box-sizing: border-box;
         display: block;
         margin: 64px auto 6px auto;
-        max-width: 20%;
+        max-width: 312px;
+        width: 100%;
       }
 
       /* Logo subtitle */
       div.subtitle {
+        box-sizing: border-box;
         font-size: 1.4em;
         margin: auto auto 32px auto;
-        max-width: 20%;
+        max-width: 312px;
         text-align: right;
+        width: 100%;
       }
 
       /* Search wrapper */
       div.searchWrapper {
+        box-sizing: border-box;
         margin: auto;
         max-width: 980px;
         padding: 0 12px;
@@ -42,13 +47,13 @@
         background: white;
         box-sizing: border-box;
         border-radius: 3px;
-        padding: 8px 20px 5px 20px;
+        padding: 8px 24px 5px 24px;
       }
 
       /* Search wrapper - Search wrapper - Icon button */
       div.searchWrapper div.search paper-icon-button {}
 
-      /* Search wrapper - Search wrapper - Input */
+      /* Search wrapper - Search wrapper - InputZ */
       div.searchWrapper div.search input {
         @apply(--layout-flex);
         background: transparent;
