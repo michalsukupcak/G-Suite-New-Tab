@@ -159,7 +159,7 @@
       <paper-dialog-scrollable>
         G Suite New Tab extension just got updated! Highlights:<br>
         <br>
-        * [New] UI tweaks for Dashboard and Bookmarks.<br>
+        * [New] New shortcuts to Gallery.io and Hangouts Chat (both currently in EAP).<br>
         <br>
         Full changelog: <a href="https://chrome.google.com/webstore/detail/g-suite-new-tab/ehpgcagmhpndkmglombjndkdmggkgnge">Webstore</a><br>
         Source code: <a href="https://github.com/michalsukupcak/G-Suite-New-Tab" target="_blank">Github</a><br>
@@ -200,7 +200,7 @@
            */
           APP_VERSION: {
             type: Number,
-            value: 4
+            value: 5
           },
 
           /**
@@ -294,6 +294,7 @@
         _shortcutsEmpty: function () {
           this.set('shortcuts', [
             { type: 'web', icon: 'admin', title: 'Admin', page: 'https://admin.google.com/AdminHome', visible: true },
+            { type: 'web', icon: 'chat', title: 'Chat', page: 'https://chat.google.com', visible: true },
             { type: 'web', icon: 'meet', title: 'Meet', page: 'https://meet.google.com', visible: true },
             { type: 'web', icon: 'hangouts', title: 'Hangouts', page: 'https://hangouts.google.com', visible: true },
             { type: 'web', icon: 'drive', title: 'Drive', page: 'https://drive.google.com/drive/my-drive', visible: true },
@@ -305,6 +306,7 @@
             { type: 'web', icon: 'groups', title: 'Groups', page: 'https://groups.google.com/a/wds.sk/forum/#!myforums', visible: true },
             { type: 'web', icon: 'gmail', title: 'Gmail', page: 'https://mail.google.com/mail/u/0/#inbox', visible: true },
             { type: 'web', icon: 'plus', title: 'Google+', page: 'https://plus.google.com/', visible: true },
+            { type: 'web', icon: 'gallery', title: 'Gallery.io', page: 'https://gallery.io/', visible: true },
             { type: 'web', icon: 'gitlab', title: 'Gitlab', page: 'https://gitlab.wds.sk/', visible: true },
             { type: 'web', icon: 'youtrack', title: 'Youtrack', page: 'https://youtrack.wds.sk/', visible: true }
           ]);
