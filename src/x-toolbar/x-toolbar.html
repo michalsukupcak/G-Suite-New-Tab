@@ -76,8 +76,9 @@
     <x-toolbar-customize-dialog
       id="customizeDialog"
       flat-style="{{flatStyle}}"
-      shortcuts="{{shortcuts}}"
+      g-suite-shortcuts="{{gSuiteShortcuts}}"
       show-search="{{showSearch}}"
+      show-wds-domain="{{showWdsDomain}}"
       tabs="{{tabs}}">
     </x-toolbar-customize-dialog>
 
@@ -104,7 +105,7 @@
           /**
            * List of app shortcuts.
            */
-          shortcuts: {
+          gSuiteShortcuts: {
             type: Array,
             notify: true
           },
@@ -113,6 +114,11 @@
            * Search box visibility toggle.
            */
           showSearch: {
+            type: Boolean,
+            notify: true
+          },
+
+          showWdsDomain: {
             type: Boolean,
             notify: true
           },

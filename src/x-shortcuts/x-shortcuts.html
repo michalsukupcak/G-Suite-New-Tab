@@ -6,26 +6,37 @@
     <style>
 
       /* Element */
-      :host {
+      :host { display: block; }
+
+      /* Element */
+      div.wrapper {
         @apply(--layout-horizontal);
         @apply(--layout-center-justified);
         @apply(--layout-wrap);
         font-size: 1.3em;
       }
 
+      /* WDS Domain shortcuts wrapper */
+      div.wrapper.wds {
+        border-top: 1px solid var(--divider-color);
+        margin: 18px auto auto auto;
+        max-width: 1024px;
+        padding: 18px 0 0 0;
+      }
+
       /* Shortcut link */
-      div {
+      div.wrapper div.shortcut {
         border-radius: 3px;
         padding: 18px 0 0 0;
         position: relative;
         transition: .2s ease;
         width: 128px;
       }
-      div:hover { background: var(--border-color); cursor: pointer; }
-      div:hover > p { color: var(--dark-gray-text-color); }
+      div.wrapper div.shortcut:hover { background: var(--border-color); cursor: pointer; }
+      div.wrapper div.shortcut:hover > p { color: var(--dark-gray-text-color); }
 
       /* Shortcut link - Icon */
-      div img {
+      div.wrapper div.shortcut img {
         display: block;
         height: 48px;
         margin: auto;
@@ -33,7 +44,7 @@
       }
 
       /* Shortcut link - Text */
-      div p {
+      div.wrapper div.shortcut p {
         color: var(--gray-text-color);
         margin: 0;
         padding: 9px 0;
@@ -43,14 +54,36 @@
 
     </style>
 
-    <!-- Shortcuts -->
-    <template is="dom-repeat" items="[[shortcuts]]" as="shortcut">
-      <div on-tap="_openShortcut" hidden$="[[!shortcut.visible]]">
-        <paper-ripple></paper-ripple>
-        <img src="../../images/shortcuts/[[shortcut.icon]].png">
-        <p>[[shortcut.title]]</p>
+
+
+    <!-- G Suite Shortcuts -->
+    <div class="wrapper">
+      <template is="dom-repeat" items="[[gSuiteShortcuts]]" as="shortcut">
+        <div class="shortcut" on-tap="_openShortcut" hidden$="[[!shortcut.visible]]">
+          <paper-ripple></paper-ripple>
+          <img src="../../images/shortcuts/[[shortcut.icon]].png">
+          <p>[[shortcut.title]]</p>
+        </div>
+      </template>
+    </div>
+
+    <!-- WDS Domain Shortcuts -->
+    <template is="dom-if" if="[[showWdsDomain]]">
+
+      <!-- Shortcuts -->
+      <div class="wrapper wds">
+        <template is="dom-repeat" items="[[wdsDomainShortcuts]]" as="shortcut">
+          <div class="shortcut" on-tap="_openShortcut" hidden$="[[!shortcut.visible]]">
+            <paper-ripple></paper-ripple>
+            <img src="../../images/shortcuts/[[shortcut.icon]].png">
+            <p>[[shortcut.title]]</p>
+          </div>
+        </template>
       </div>
+
     </template>
+
+
 
   </template>
   <script>
@@ -67,7 +100,15 @@
           /**
            * List of shortcuts on homepage.
            */
-          shortcuts: {
+          gSuiteShortCuts: {
+            type: Array
+          },
+
+          showWdsDomain: {
+            type: Boolean
+          },
+
+          wdsDomainShortcuts: {
             type: Array
           }
 

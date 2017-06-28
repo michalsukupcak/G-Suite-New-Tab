@@ -8,6 +8,8 @@
       /* Element */
       :host {}
 
+      p { color: #999; font-size: .8em; line-height: 1em; margin: 0 0 0 30px; padding: 0; }
+
       paper-dialog { width: 512px; }
       paper-dialog h2 {}
       paper-dialog paper-dialog-scrollable {}
@@ -41,6 +43,11 @@
         <h3>Flat style</h3>
         <paper-checkbox checked="{{flatStyle}}">Use flat style for Dashboard and Bookmarks cards</paper-checkbox>
 
+        <!-- Search box -->
+        <h3>WDS.sk Domain</h3>
+        <paper-checkbox checked="{{showWdsDomain}}">Show apps specific to @wds.sk domain</paper-checkbox>
+        <p>Unless you have a G Suite account for domain @wds.sk, you will want to turn this setting <strong>off</strong> as you won't be able to access these apps.</p>
+
         <!-- Tabs buttons -->
         <h3>Chrome tabs:</h3>
         <div class="columns">
@@ -52,7 +59,7 @@
         <!-- Shortcuts -->
         <h3>Shortcuts:</h3>
         <div class="columns">
-          <template is="dom-repeat" items="{{shortcuts}}" as="shortcut">
+          <template is="dom-repeat" items="{{gSuiteShortcuts}}" as="shortcut">
             <paper-checkbox checked="{{shortcut.visible}}">[[shortcut.title]]</paper-checkbox>
           </template>
         </div>
@@ -89,7 +96,7 @@
           /**
            * List of app shortcuts.
            */
-          shortcuts: {
+          gSuiteShortcuts: {
             type: Array,
             notify: true
           },
@@ -98,6 +105,11 @@
            * Search box visibility toggle.
            */
           showSearch: {
+            type: Boolean,
+            notify: true
+          },
+
+          showWdsDomain: {
             type: Boolean,
             notify: true
           },

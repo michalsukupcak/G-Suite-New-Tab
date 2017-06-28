@@ -126,8 +126,9 @@
             <!-- Chrome:// controls -->
             <x-toolbar
               flat-style="{{flatStyle}}"
+              g-suite-shortcuts="{{gSuiteShortcuts}}"
               show-search="{{showSearch}}"
-              shortcuts="{{shortcuts}}"
+              show-wds-domain="{{showWdsDomain}}"
               tabs="{{tabs}}">
             </x-toolbar>
 
@@ -143,7 +144,11 @@
           </template>
 
           <!-- Shortcuts -->
-          <x-shortcuts shortcuts="{{shortcuts}}"></x-shortcuts>
+          <x-shortcuts
+            g-suite-shortcuts="{{gSuiteShortcuts}}"
+            show-wds-domain="{{showWdsDomain}}"
+            wds-domain-shortcuts="{{wdsDomainShortcuts}}">
+          </x-shortcuts>
 
           <!-- Cards -->
           <x-cards flat-style="[[flatStyle]]"></x-cards>
@@ -159,7 +164,9 @@
       <paper-dialog-scrollable>
         G Suite New Tab extension just got updated! Highlights:<br>
         <br>
-        * [New] New shortcuts to Gallery.io and Hangouts Chat (both currently in EAP).<br>
+        * [New] Separated standard G Suite apps and WDS domain apps.<br>
+        * [New] New toggle to show/hide WDS domain apps.<br>
+        * [New] New Confluence and JIRA WDS domain apps.<br>
         <br>
         Full changelog: <a href="https://chrome.google.com/webstore/detail/g-suite-new-tab/ehpgcagmhpndkmglombjndkdmggkgnge">Webstore</a><br>
         Source code: <a href="https://github.com/michalsukupcak/G-Suite-New-Tab" target="_blank">Github</a><br>
@@ -179,9 +186,11 @@
 
     <!-- Browser local storage -->
     <iron-localstorage name="__gsuitenewtab_flatstyle" value="{{flatStyle}}" on-iron-localstorage-load-empty="_flatStyleEmpty"></iron-localstorage>
-    <iron-localstorage name="__gsuitenewtab_shortcuts" value="{{shortcuts}}" on-iron-localstorage-load-empty="_shortcutsEmpty"></iron-localstorage>
+    <iron-localstorage name="__gsuitenewtab_gsuiteshortcuts" value="{{gSuiteShortcuts}}" on-iron-localstorage-load-empty="_gSuiteShortcutsEmpty"></iron-localstorage>
     <iron-localstorage name="__gsuitenewtab_showsearch" value="{{showSearch}}" on-iron-localstorage-load-empty="_showSearchEmpty"></iron-localstorage>
+    <iron-localstorage name="__gsuitenewtab_showwdsdomain" value="{{showWdsDomain}}" on-iron-localstorage-load-empty="_showWdsDomainEmpty"></iron-localstorage>
     <iron-localstorage name="__gsuitenewtab_tabs" value="{{tabs}}" on-iron-localstorage-load-empty="_tabsEmpty"></iron-localstorage>
+    <iron-localstorage name="__gsuitenewtab_wdsdomainshortcuts" value="{{wdsDomainShortcuts}}" on-iron-localstorage-load-empty="_wdsDomainShortcutsEmpty"></iron-localstorage>
 
   </template>
   <script>
@@ -200,7 +209,7 @@
            */
           APP_VERSION: {
             type: Number,
-            value: 5
+            value: 8
           },
 
           /**
@@ -212,9 +221,9 @@
           },
 
           /**
-           * List of app shortcuts.
+           * List of G Suite app shortcuts.
            */
-          shortcuts: {
+          gSuiteShortcuts: {
             type: Array
           },
 
@@ -226,13 +235,30 @@
           },
 
           /**
+           * WDS apps visibility toggle.
+           */
+          showWdsDomain: {
+            type: Boolean
+          },
+
+          /**
            * List of chrome://.. tabs used in drawer and toolbar.
            */
           tabs: {
             type: Array
+          },
+
+          /**
+           * List of G Suite app shortcuts.
+           */
+          wdsDomainShortcuts: {
+            type: Array
           }
 
         },
+
+        /* ---------------------------------------------------------------------------------------------------------- */
+        /* Initialization */
 
         /**
          * Check app version and clear storage if new version is detected.
@@ -242,6 +268,7 @@
          */
         ready: function () {
 
+          // Reset extension if new version is detected
           var version = '__gsuitenewtab_version_check_' + this.APP_VERSION;
           if (!window.localStorage.getItem(version)) {
             window.localStorage.clear();
@@ -249,19 +276,24 @@
             this.$.changelog.open();
           }
 
+          // Register scroll listener
+          var that = this;
           document.addEventListener('scroll', function () {
             if (document.body.scrollTop > 0) {
-              if (this.$.toolbar.style.backgroundColor !== '#FAFAFA') {
-                this.$.toolbar.style.backgroundColor = '#FAFAFA';
+              if (that.$.toolbar.style.backgroundColor !== '#FAFAFA') {
+                that.$.toolbar.style.backgroundColor = '#FAFAFA';
               }
             } else {
-              if (this.$.toolbar.style.backgroundColor !== '') {
-                this.$.toolbar.style.backgroundColor = '';
+              if (that.$.toolbar.style.backgroundColor !== '') {
+                that.$.toolbar.style.backgroundColor = '';
               }
             }
-          }.bind(this));
+          });
 
         },
+
+        /* ---------------------------------------------------------------------------------------------------------- */
+        /* Empty storage functions */
 
         /**
          * If this.flatStyle variable is empty, set new default value to false.
@@ -273,50 +305,41 @@
         },
 
         /**
-         * Handler for iron-signal-toast event, opens paper-toast with a message from event.
-         *
-         * @param event
-         * @private
-         */
-        _openToast: function (event) {
-          if (this.$.toast.opened) {
-            this.$.toast.hide();
-          }
-          this.$.toast.text = event.detail;
-          this.$.toast.show();
-        },
-
-        /**
-         * If this.shortcuts variable is empty, set new default value for the array.
+         * If this.gSuiteShortcuts variable is empty, set new default value for the array.
          *
          * @private
          */
-        _shortcutsEmpty: function () {
-          this.set('shortcuts', [
+        _gSuiteShortcutsEmpty: function () {
+          this.set('gSuiteShortcuts', [
             { type: 'web', icon: 'admin', title: 'Admin', page: 'https://admin.google.com/AdminHome', visible: true },
             { type: 'web', icon: 'chat', title: 'Chat', page: 'https://chat.google.com', visible: true },
             { type: 'web', icon: 'meet', title: 'Meet', page: 'https://meet.google.com', visible: true },
             { type: 'web', icon: 'hangouts', title: 'Hangouts', page: 'https://hangouts.google.com', visible: true },
             { type: 'web', icon: 'drive', title: 'Drive', page: 'https://drive.google.com/drive/my-drive', visible: true },
             { type: 'web', icon: 'keep', title: 'Keep', page: 'https://keep.google.com/', visible: true },
+            { type: 'web', icon: 'gallery', title: 'Gallery.io', page: 'https://gallery.io/', visible: true },
             { type: 'web', icon: 'calendar', title: 'Calendar', page: 'https://calendar.google.com/calendar/render', visible: true },
             { type: 'web', icon: 'inbox', title: 'Inbox', page: 'https://inbox.google.com', visible: true },
             { type: 'web', icon: 'cloud', title: 'Cloud Search', page: 'https://cloudsearch.google.com/cloudsearch', visible: true },
             { type: 'web', icon: 'my-account', title: 'My Account', page: 'https://myaccount.google.com/', visible: true },
             { type: 'web', icon: 'groups', title: 'Groups', page: 'https://groups.google.com/a/wds.sk/forum/#!myforums', visible: true },
             { type: 'web', icon: 'gmail', title: 'Gmail', page: 'https://mail.google.com/mail/u/0/#inbox', visible: true },
-            { type: 'web', icon: 'plus', title: 'Google+', page: 'https://plus.google.com/', visible: true },
-            { type: 'web', icon: 'gallery', title: 'Gallery.io', page: 'https://gallery.io/', visible: true },
-            { type: 'web', icon: 'gitlab', title: 'Gitlab', page: 'https://gitlab.wds.sk/', visible: true },
-            { type: 'web', icon: 'youtrack', title: 'Youtrack', page: 'https://youtrack.wds.sk/', visible: true }
+            { type: 'web', icon: 'plus', title: 'Google+', page: 'https://plus.google.com/', visible: true }
           ]);
+        },
+
+        /**
+         * If this.showSearch variable is empty, set it to true by default.
+         */
+        _showSearchEmpty: function () {
+          this.set('showSearch', true);
         },
 
         /**
          * If this.searchBox variable is empty, set it to true by default.
          */
-        _showSearchEmpty: function () {
-          this.set('showSearch', true);
+        _showWdsDomainEmpty: function () {
+          this.set('showWdsDomain', true);
         },
 
         /**
@@ -333,6 +356,37 @@
             { page: 'extensions', icon: 'icons:extension', title: 'Extensions', visible: true },
             { page: 'flags', icon: 'icons:flag', title: 'Flags', visible: true }
           ]);
+        },
+
+        /**
+         * If this.wdsDomainShortcuts variable is empty, set new default value for the array.
+         *
+         * @private
+         */
+        _wdsDomainShortcutsEmpty: function () {
+          this.set('wdsDomainShortcuts', [
+            { type: 'web', icon: 'confluence', title: 'Confluence', page: 'https://confluence.wds.sk/', visible: true },
+            { type: 'web', icon: 'jira', title: 'JIRA', page: 'https://jira.wds.sk/', visible: true },
+            { type: 'web', icon: 'youtrack', title: 'Youtrack', page: 'https://youtrack.wds.sk/', visible: true },
+            { type: 'web', icon: 'gitlab', title: 'Gitlab', page: 'https://gitlab.wds.sk/', visible: true }
+          ]);
+        },
+
+        /* ---------------------------------------------------------------------------------------------------------- */
+        /* Event/trigger functions */
+
+        /**
+         * Handler for iron-signal-toast event, opens paper-toast with a message from event.
+         *
+         * @param event
+         * @private
+         */
+        _openToast: function (event) {
+          if (this.$.toast.opened) {
+            this.$.toast.hide();
+          }
+          this.$.toast.text = event.detail;
+          this.$.toast.show();
         }
 
       });
