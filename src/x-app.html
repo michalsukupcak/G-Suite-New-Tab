@@ -32,7 +32,6 @@
 <link rel="import" href="x-drawer/x-drawer.html">
 <link rel="import" href="x-search/x-search.html">
 <link rel="import" href="x-shortcuts/x-shortcuts.html">
-<link rel="import" href="x-toolbar/x-toolbar-customize-dialog.html">
 <link rel="import" href="x-toolbar/x-toolbar.html">
 
 <!-- Element -->
@@ -60,7 +59,8 @@
       app-drawer-layout {}
 
       /* App panel - Drawer */
-      app-drawer-layout app-drawer { --app-drawer-width: 312px; }
+      app-drawer-layout app-drawer { --app-drawer-width: 264px; }
+      app-drawer-layout app-drawer.fixed { border: 1px solid #CCC; }
 
       /* App panel - Drawer - Drawer content */
       app-drawer-layout app-drawer x-drawer {}
@@ -94,19 +94,29 @@
 
       /* Changelog dialog */
       paper-dialog {}
+      paper-dialog#customizeDialog { width: 512px; }
       paper-dialog h2 {}
       paper-dialog paper-dialog-scrollable {}
       paper-dialog paper-dialog-scrollable a { color: var(--primary-color)}
+      paper-dialog paper-dialog-scrollable h3 { display: block; margin-bottom: 2px; }
+      paper-dialog paper-dialog-scrollable div.description { color: var(--dark-gray-text-color); font-style: italic; }
+      paper-dialog paper-dialog-scrollable div.columns { @apply(--layout-horizontal); @apply(--layout-wrap); }
+      paper-dialog paper-dialog-scrollable div.columns paper-checkbox { box-sizing: border-box; width: 30%; }
+      paper-dialog paper-dialog-scrollable p { color: #999; font-size: .8em; line-height: 1em; margin: 0 0 0 30px; padding: 0; }
+      paper-dialog paper-dialog-scrollable paper-checkbox { display: block; margin: 3px; }
       paper-dialog div.buttons {}
       paper-dialog div.buttons paper-button {}
 
     </style>
 
+    <!-- ----------------------------------------------------------------------------------------------------------- -->
     <!-- App layout -->
-    <app-drawer-layout force-narrow>
+
+    <!-- Wrapper -->
+    <app-drawer-layout force-narrow="[[!useFixedDrawer]]">
 
       <!-- Drawer panel -->
-      <app-drawer slot="drawer" swipe-open>
+      <app-drawer slot="drawer" class$="[[_getDrawerClass(useFixedDrawer)]]" swipe-open="[[!useFixedDrawer]]" persistent="[[useFixedDrawer]]">
         <x-drawer tabs="{{tabs}}"></x-drawer>
       </app-drawer>
 
@@ -118,18 +128,15 @@
           <app-toolbar id="toolbar">
 
             <!-- Drawer toggle button -->
-            <paper-icon-button icon="icons:menu" drawer-toggle></paper-icon-button>
+            <div hidden$="[[useFixedDrawer]]">
+              <paper-icon-button icon="icons:menu" drawer-toggle></paper-icon-button>
+            </div>
 
             <!-- App title (empty) -->
             <div main-title></div>
 
             <!-- Chrome:// controls -->
-            <x-toolbar
-              flat-style="{{flatStyle}}"
-              g-suite-shortcuts="{{gSuiteShortcuts}}"
-              show-search="{{showSearch}}"
-              show-wds-domain="{{showWdsDomain}}"
-              tabs="{{tabs}}">
+            <x-toolbar tabs="{{tabs}}" on-open-customize-dialog="_openCustomizeDialog">
             </x-toolbar>
 
           </app-toolbar>
@@ -146,12 +153,11 @@
           <!-- Shortcuts -->
           <x-shortcuts
             g-suite-shortcuts="{{gSuiteShortcuts}}"
-            show-wds-domain="{{showWdsDomain}}"
-            wds-domain-shortcuts="{{wdsDomainShortcuts}}">
+            show-wds-domain="{{showWdsDomain}}">
           </x-shortcuts>
 
           <!-- Cards -->
-          <x-cards flat-style="[[flatStyle]]"></x-cards>
+          <x-cards use-flat-style="[[useFlatStyle]]"></x-cards>
 
         </main>
 
@@ -159,14 +165,74 @@
 
     </app-drawer-layout>
 
+    <!-- ----------------------------------------------------------------------------------------------------------- -->
+    <!-- Customization dialog -->
+
+    <!-- Dialog -->
+    <paper-dialog id="customizeDialog" entry-animation="scale-up-animation" exit-animation="fade-out-animation" modal>
+
+      <!-- Title -->
+      <h2>Customization</h2>
+
+      <!-- Content -->
+      <paper-dialog-scrollable>
+
+        <!-- Description -->
+        <div class="description">Customize settings of the extension to match your needs and preferences.</div>
+
+        <!-- Search box -->
+        <h3>Search box</h3>
+        <paper-checkbox checked="{{showSearch}}">Show search box with Google logo.</paper-checkbox>
+
+        <!-- Search box -->
+        <h3>WDS.sk domain apps</h3>
+        <paper-checkbox checked="{{showWdsDomain}}">Show apps specific to @wds.sk domain.</paper-checkbox>
+        <p>Unless you have a G Suite account for domain @wds.sk, you will want to turn this setting <strong>off</strong> as you won't be able to access these apps.</p>
+
+        <!-- Search box -->
+        <h3>Menu drawer</h3>
+        <paper-checkbox checked="{{useFixedDrawer}}">Set menu drawer to always visible.</paper-checkbox>
+
+        <!-- Search box -->
+        <h3>Cards</h3>
+        <paper-checkbox checked="{{useFlatStyle}}">Use flat style for Dashboard and Bookmarks cards</paper-checkbox>
+
+        <!-- Tabs buttons -->
+        <h3>Chrome tabs:</h3>
+        <div class="columns">
+          <template is="dom-repeat" items="{{tabs}}" as="tab">
+            <paper-checkbox checked="{{tab.visible}}">[[tab.title]]</paper-checkbox>
+          </template>
+        </div>
+
+        <!-- Shortcuts -->
+        <h3>Shortcuts:</h3>
+        <div class="columns">
+          <template is="dom-repeat" items="{{gSuiteShortcuts}}" as="shortcut">
+            <paper-checkbox checked="{{shortcut.visible}}">[[shortcut.title]]</paper-checkbox>
+          </template>
+        </div>
+
+      </paper-dialog-scrollable>
+
+      <!-- Buttons -->
+      <div class="buttons">
+        <paper-button dialog-dismiss>Close</paper-button>
+      </div>
+
+    </paper-dialog>
+
+    <!-- ----------------------------------------------------------------------------------------------------------- -->
+    <!-- What's new dialog -->
+
+    <!-- Dialog -->
     <paper-dialog id="changelog" modal>
       <h2>What's New</h2>
       <paper-dialog-scrollable>
         G Suite New Tab extension just got updated! Highlights:<br>
         <br>
-        * [New] Separated standard G Suite apps and WDS domain apps.<br>
-        * [New] New toggle to show/hide WDS domain apps.<br>
-        * [New] New Confluence and JIRA WDS domain apps.<br>
+        * [New] Main menu drawer can now be set to always visible instead of always hidden.<br>
+        * [Fix] Extension settings will no longer reset after an update!<br>
         <br>
         Full changelog: <a href="https://chrome.google.com/webstore/detail/g-suite-new-tab/ehpgcagmhpndkmglombjndkdmggkgnge">Webstore</a><br>
         Source code: <a href="https://github.com/michalsukupcak/G-Suite-New-Tab" target="_blank">Github</a><br>
@@ -175,6 +241,9 @@
        <paper-button dialog-dismiss>Close</paper-button>
       </div>
     </paper-dialog>
+
+    <!-- ----------------------------------------------------------------------------------------------------------- -->
+    <!-- Other elements -->
 
     <!-- Toast -->
     <paper-toast id="toast"></paper-toast>
@@ -185,12 +254,12 @@
     </iron-signals>
 
     <!-- Browser local storage -->
-    <iron-localstorage name="__gsuitenewtab_flatstyle" value="{{flatStyle}}" on-iron-localstorage-load-empty="_flatStyleEmpty"></iron-localstorage>
-    <iron-localstorage name="__gsuitenewtab_gsuiteshortcuts" value="{{gSuiteShortcuts}}" on-iron-localstorage-load-empty="_gSuiteShortcutsEmpty"></iron-localstorage>
-    <iron-localstorage name="__gsuitenewtab_showsearch" value="{{showSearch}}" on-iron-localstorage-load-empty="_showSearchEmpty"></iron-localstorage>
-    <iron-localstorage name="__gsuitenewtab_showwdsdomain" value="{{showWdsDomain}}" on-iron-localstorage-load-empty="_showWdsDomainEmpty"></iron-localstorage>
-    <iron-localstorage name="__gsuitenewtab_tabs" value="{{tabs}}" on-iron-localstorage-load-empty="_tabsEmpty"></iron-localstorage>
-    <iron-localstorage name="__gsuitenewtab_wdsdomainshortcuts" value="{{wdsDomainShortcuts}}" on-iron-localstorage-load-empty="_wdsDomainShortcutsEmpty"></iron-localstorage>
+    <iron-localstorage name="__gsuitenewtab_gsuiteshortcuts" value="{{gSuiteShortcuts}}"></iron-localstorage>
+    <iron-localstorage name="__gsuitenewtab_showsearch" value="{{showSearch}}"></iron-localstorage>
+    <iron-localstorage name="__gsuitenewtab_showwdsdomain" value="{{showWdsDomain}}"></iron-localstorage>
+    <iron-localstorage name="__gsuitenewtab_tabs" value="{{tabs}}"></iron-localstorage>
+    <iron-localstorage name="__gsuitenewtab_usefixeddrawer" value="{{useFixedDrawer}}"></iron-localstorage>
+    <iron-localstorage name="__gsuitenewtab_useflatstyle" value="{{useFlatStyle}}"></iron-localstorage>
 
   </template>
   <script>
@@ -209,15 +278,7 @@
            */
           APP_VERSION: {
             type: Number,
-            value: 8
-          },
-
-          /**
-           * Enable flat style for Dashboard and Bookmarks cards.
-           */
-          flatStyle: {
-            type: Boolean,
-            notify: true
+            value: 12
           },
 
           /**
@@ -249,16 +310,32 @@
           },
 
           /**
-           * List of G Suite app shortcuts.
+           * Enable fixed (true) or swipe-able drawer (false).
            */
-          wdsDomainShortcuts: {
-            type: Array
+          useFixedDrawer: {
+            type: Boolean,
+            value: false
+          },
+
+          /**
+           * Enable flat style for Dashboard and Bookmarks cards.
+           */
+          useFlatStyle: {
+            type: Boolean,
+            value: true
           }
 
         },
-
-        /* ---------------------------------------------------------------------------------------------------------- */
-        /* Initialization */
+        observers: [
+          '_setDefaultValues(' +
+            'gSuiteShortcuts,' +
+            'showSearch,' +
+            'showWdsDomain,' +
+            'tabs,' +
+            'useFixedDrawer,' +
+            'useFlatStyle' +
+          ')'
+        ],
 
         /**
          * Check app version and clear storage if new version is detected.
@@ -292,88 +369,23 @@
 
         },
 
-        /* ---------------------------------------------------------------------------------------------------------- */
-        /* Empty storage functions */
-
         /**
-         * If this.flatStyle variable is empty, set new default value to false.
+         * Return drawer .fixed class (if useFixedDrawer is enabled).
          *
          * @private
          */
-        _flatStyleEmpty: function () {
-          this.set('flatStyle', false);
+        _getDrawerClass: function (useFixedDrawer) {
+          return useFixedDrawer ? 'fixed' : '';
         },
 
         /**
-         * If this.gSuiteShortcuts variable is empty, set new default value for the array.
+         * Opens #customizeDialog.
          *
          * @private
          */
-        _gSuiteShortcutsEmpty: function () {
-          this.set('gSuiteShortcuts', [
-            { type: 'web', icon: 'admin', title: 'Admin', page: 'https://admin.google.com/AdminHome', visible: true },
-            { type: 'web', icon: 'chat', title: 'Chat', page: 'https://chat.google.com', visible: true },
-            { type: 'web', icon: 'meet', title: 'Meet', page: 'https://meet.google.com', visible: true },
-            { type: 'web', icon: 'hangouts', title: 'Hangouts', page: 'https://hangouts.google.com', visible: true },
-            { type: 'web', icon: 'drive', title: 'Drive', page: 'https://drive.google.com/drive/my-drive', visible: true },
-            { type: 'web', icon: 'keep', title: 'Keep', page: 'https://keep.google.com/', visible: true },
-            { type: 'web', icon: 'gallery', title: 'Gallery.io', page: 'https://gallery.io/', visible: true },
-            { type: 'web', icon: 'calendar', title: 'Calendar', page: 'https://calendar.google.com/calendar/render', visible: true },
-            { type: 'web', icon: 'inbox', title: 'Inbox', page: 'https://inbox.google.com', visible: true },
-            { type: 'web', icon: 'cloud', title: 'Cloud Search', page: 'https://cloudsearch.google.com/cloudsearch', visible: true },
-            { type: 'web', icon: 'my-account', title: 'My Account', page: 'https://myaccount.google.com/', visible: true },
-            { type: 'web', icon: 'groups', title: 'Groups', page: 'https://groups.google.com/a/wds.sk/forum/#!myforums', visible: true },
-            { type: 'web', icon: 'gmail', title: 'Gmail', page: 'https://mail.google.com/mail/u/0/#inbox', visible: true },
-            { type: 'web', icon: 'plus', title: 'Google+', page: 'https://plus.google.com/', visible: true }
-          ]);
+        _openCustomizeDialog: function () {
+          this.$.customizeDialog.open();
         },
-
-        /**
-         * If this.showSearch variable is empty, set it to true by default.
-         */
-        _showSearchEmpty: function () {
-          this.set('showSearch', true);
-        },
-
-        /**
-         * If this.searchBox variable is empty, set it to true by default.
-         */
-        _showWdsDomainEmpty: function () {
-          this.set('showWdsDomain', true);
-        },
-
-        /**
-         * If this.tabs variable is empty, set new default value for the array.
-         *
-         * @private
-         */
-        _tabsEmpty: function () {
-          this.set('tabs', [
-            { page: 'apps', icon: 'icons:apps', title: 'Apps', visible: true },
-            { page: 'bookmarks', icon: 'icons:star', title: 'Bookmarks', visible: true },
-            { page: 'downloads', icon: 'icons:file-download', title: 'Downloads', visible: true },
-            { page: 'history', icon: 'icons:history', title: 'History', visible: true },
-            { page: 'extensions', icon: 'icons:extension', title: 'Extensions', visible: true },
-            { page: 'flags', icon: 'icons:flag', title: 'Flags', visible: true }
-          ]);
-        },
-
-        /**
-         * If this.wdsDomainShortcuts variable is empty, set new default value for the array.
-         *
-         * @private
-         */
-        _wdsDomainShortcutsEmpty: function () {
-          this.set('wdsDomainShortcuts', [
-            { type: 'web', icon: 'confluence', title: 'Confluence', page: 'https://confluence.wds.sk/', visible: true },
-            { type: 'web', icon: 'jira', title: 'JIRA', page: 'https://jira.wds.sk/', visible: true },
-            { type: 'web', icon: 'youtrack', title: 'Youtrack', page: 'https://youtrack.wds.sk/', visible: true },
-            { type: 'web', icon: 'gitlab', title: 'Gitlab', page: 'https://gitlab.wds.sk/', visible: true }
-          ]);
-        },
-
-        /* ---------------------------------------------------------------------------------------------------------- */
-        /* Event/trigger functions */
 
         /**
          * Handler for iron-signal-toast event, opens paper-toast with a message from event.
@@ -387,6 +399,82 @@
           }
           this.$.toast.text = event.detail;
           this.$.toast.show();
+        },
+
+        /**
+         * Observer for default configuration values.
+         *
+         * @param gSuiteShortcuts
+         * @param showSearch
+         * @param showWdsDomain
+         * @param tabs
+         * @param useFixedDrawer
+         * @param useFlatStyle
+         * @private
+         */
+        _setDefaultValues: function (
+            gSuiteShortcuts,
+            showSearch,
+            showWdsDomain,
+            tabs,
+            useFixedDrawer,
+            useFlatStyle
+        ) {
+          this.debounce('_setDefaultValues', function () {
+            if (!gSuiteShortcuts) {
+
+              // Create initial gSuite apps (if empty)
+              this.set('gSuiteShortcuts', [
+                { type: 'web', icon: 'admin', title: 'Admin', page: 'https://admin.google.com/AdminHome', visible: true },
+                { type: 'web', icon: 'chat', title: 'Chat', page: 'https://chat.google.com', visible: true },
+                { type: 'web', icon: 'meet', title: 'Meet', page: 'https://meet.google.com', visible: true },
+                { type: 'web', icon: 'hangouts', title: 'Hangouts', page: 'https://hangouts.google.com', visible: true },
+                { type: 'web', icon: 'drive', title: 'Drive', page: 'https://drive.google.com/drive/my-drive', visible: true },
+                { type: 'web', icon: 'keep', title: 'Keep', page: 'https://keep.google.com/', visible: true },
+                { type: 'web', icon: 'gallery', title: 'Gallery.io', page: 'https://gallery.io/', visible: true },
+                { type: 'web', icon: 'calendar', title: 'Calendar', page: 'https://calendar.google.com/calendar/render', visible: true },
+                { type: 'web', icon: 'inbox', title: 'Inbox', page: 'https://inbox.google.com', visible: true },
+                { type: 'web', icon: 'cloud', title: 'Cloud Search', page: 'https://cloudsearch.google.com/cloudsearch', visible: true },
+                { type: 'web', icon: 'my-account', title: 'My Account', page: 'https://myaccount.google.com/', visible: true },
+                { type: 'web', icon: 'groups', title: 'Groups', page: 'https://groups.google.com/a/wds.sk/forum/#!myforums', visible: true },
+                { type: 'web', icon: 'gmail', title: 'Gmail', page: 'https://mail.google.com/mail/u/0/#inbox', visible: true },
+                { type: 'web', icon: 'plus', title: 'Google+', page: 'https://plus.google.com/', visible: true }
+              ]);
+            }
+
+            // Search is visible by default
+            if (showSearch === null) {
+              this.set('showSearch', true);
+            }
+
+            // WDS domain apps are visible by default
+            if (showWdsDomain === null) {
+              this.set('showWdsDomain', true);
+            }
+
+            // Create initial tabs config (if empty)
+            if (!tabs) {
+              this.set('tabs', [
+                { page: 'apps', icon: 'icons:apps', title: 'Apps', visible: true },
+                { page: 'bookmarks', icon: 'icons:star', title: 'Bookmarks', visible: true },
+                { page: 'downloads', icon: 'icons:file-download', title: 'Downloads', visible: true },
+                { page: 'history', icon: 'icons:history', title: 'History', visible: true },
+                { page: 'extensions', icon: 'icons:extension', title: 'Extensions', visible: true },
+                { page: 'flags', icon: 'icons:flag', title: 'Flags', visible: true }
+              ]);
+            }
+
+            // Drawer is swipe-able by default
+            if (useFixedDrawer === null) {
+              this.set('useFixedDrawer', false);
+            }
+
+            // Flat style is disabled by default
+            if (useFlatStyle === null) {
+              this.set('useFlatStyle', false);
+            }
+
+          });
         }
 
       });

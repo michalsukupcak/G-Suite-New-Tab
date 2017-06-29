@@ -104,12 +104,26 @@
             type: Array
           },
 
+          /**
+           * WDS apps visibility toggle.
+           */
           showWdsDomain: {
             type: Boolean
           },
 
+          /**
+           * List of WDS apps.
+           */
           wdsDomainShortcuts: {
-            type: Array
+            type: Array,
+            value: function () {
+              return [
+                { type: 'web', icon: 'confluence', title: 'Confluence', page: 'https://confluence.wds.sk/', visible: true },
+                { type: 'web', icon: 'jira', title: 'JIRA', page: 'https://jira.wds.sk/', visible: true },
+                { type: 'web', icon: 'youtrack', title: 'Youtrack', page: 'https://youtrack.wds.sk/', visible: true },
+                { type: 'web', icon: 'gitlab', title: 'Gitlab', page: 'https://gitlab.wds.sk/', visible: true }
+              ]
+            }
           }
 
         },

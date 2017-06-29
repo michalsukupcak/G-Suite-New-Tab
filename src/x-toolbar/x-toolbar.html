@@ -72,16 +72,6 @@
       </paper-menu>
     </paper-menu-button>
 
-    <!-- Customize extension dialog -->
-    <x-toolbar-customize-dialog
-      id="customizeDialog"
-      flat-style="{{flatStyle}}"
-      g-suite-shortcuts="{{gSuiteShortcuts}}"
-      show-search="{{showSearch}}"
-      show-wds-domain="{{showWdsDomain}}"
-      tabs="{{tabs}}">
-    </x-toolbar-customize-dialog>
-
   </template>
   <script>
     (function () {
@@ -93,35 +83,6 @@
          */
         is: 'x-toolbar',
         properties: {
-
-          /**
-           * Enable flat style for Dashboard and Bookmarks cards.
-           */
-          flatStyle: {
-            type: Boolean,
-            notify: true
-          },
-
-          /**
-           * List of app shortcuts.
-           */
-          gSuiteShortcuts: {
-            type: Array,
-            notify: true
-          },
-
-          /**
-           * Search box visibility toggle.
-           */
-          showSearch: {
-            type: Boolean,
-            notify: true
-          },
-
-          showWdsDomain: {
-            type: Boolean,
-            notify: true
-          },
 
           /**
            * List of chrome://.. tabs used in drawer and toolbar.
@@ -148,7 +109,7 @@
          * @private
          */
         _openCustomizeDialog: function () {
-          this.$.customizeDialog.open();
+          this.dispatchEvent(new Event('open-customize-dialog'));
         }
 
       });

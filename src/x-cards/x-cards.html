@@ -11,8 +11,8 @@
       /* Card wrapper */
       paper-card { box-sizing: border-box; color: #666; margin: 12px; --paper-card-header: { border-bottom: 1px solid var(--divider-color); } }
       paper-card.flat { background: transparent; border: none !important; box-shadow: none !important; }
-      paper-card.dashboard { margin-left: 24px; width: 244px; }
-      paper-card.bookmarks { margin-right: 24px; width: 688px; }
+      paper-card.dashboard { margin-left: 24px; max-width: 244px; }
+      paper-card.bookmarks { margin-right: 24px; max-width: 688px; }
 
       /* Card wrapper - Card content */
       paper-card div.card-content {}
@@ -25,14 +25,14 @@
     </style>
 
     <!-- Dashboard -->
-    <paper-card heading="Dashboard" class$="[[_getCardClass('dashboard', flatStyle)]]">
+    <paper-card heading="Dashboard" class$="[[_getCardClass('dashboard', useFlatStyle)]]">
       <div class="card-content">
         <x-dashboard></x-dashboard>
       </div>
     </paper-card>
 
     <!-- Bookmarks -->
-    <paper-card heading="Bookmarks" class$="[[_getCardClass('bookmarks', flatStyle)]]">
+    <paper-card heading="Bookmarks" class$="[[_getCardClass('bookmarks', useFlatStyle)]]">
       <div class="card-content">
         <x-bookmarks></x-bookmarks>
       </div>
@@ -53,7 +53,7 @@
           /**
            * Enable flat style for Dashboard and Bookmarks cards.
            */
-          flatStyle: {
+          useFlatStyle: {
             type: Boolean,
             notify: true
           }
@@ -61,15 +61,15 @@
         },
 
         /**
-         * Returns the class for paper-card element, depending of flatStyle value.
+         * Returns the class for paper-card element, depending of useFlatStyle value.
          *
          * @param cardClass
-         * @param flatStyle
+         * @param useFlatStyle
          * @returns {*}
          * @private
          */
-        _getCardClass: function (cardClass, flatStyle) {
-          return cardClass + (flatStyle ? ' flat' : '');
+        _getCardClass: function (cardClass, useFlatStyle) {
+          return cardClass + (useFlatStyle ? ' flat' : '');
         }
 
       });
