@@ -8,53 +8,16 @@
       /* Element */
       :host { display: block; }
 
-      /* Element */
-      div.wrapper {
-        @apply(--layout-horizontal);
-        @apply(--layout-center-justified);
-        @apply(--layout-wrap);
-        font-size: 1.3em;
-      }
-
-      /* WDS Domain shortcuts wrapper */
-      div.wrapper.wds {
-        border-top: 1px solid var(--divider-color);
-        margin: 18px auto auto auto;
-        max-width: 1024px;
-        padding: 18px 0 0 0;
-      }
-
-      /* Shortcut link */
-      div.wrapper div.shortcut {
-        border-radius: 3px;
-        padding: 18px 0 0 0;
-        position: relative;
-        transition: .2s ease;
-        width: 128px;
-      }
+      /* Shortcuts */
+      div.wrapper { @apply(--layout-horizontal); @apply(--layout-center-justified); @apply(--layout-wrap); font-size: 1.3em; }
+      div.wrapper.wds { border-top: 1px solid var(--divider-color); margin: 18px auto auto auto; max-width: 1024px; padding: 18px 0 0 0; }
+      div.wrapper div.shortcut { border-radius: 3px; padding: 18px 0 0 0; position: relative; transition: .2s ease; width: 128px; }
       div.wrapper div.shortcut:hover { background: var(--border-color); cursor: pointer; }
       div.wrapper div.shortcut:hover > p { color: var(--dark-gray-text-color); }
-
-      /* Shortcut link - Icon */
-      div.wrapper div.shortcut img {
-        display: block;
-        height: 48px;
-        margin: auto;
-        max-width: 100%;
-      }
-
-      /* Shortcut link - Text */
-      div.wrapper div.shortcut p {
-        color: var(--gray-text-color);
-        margin: 0;
-        padding: 9px 0;
-        text-align: center;
-        transition: .2s ease;
-      }
+      div.wrapper div.shortcut img { display: block; height: 48px; margin: auto; max-width: 100%; }
+      div.wrapper div.shortcut p { color: var(--gray-text-color); margin: 0; padding: 9px 0; text-align: center; transition: .2s ease; }
 
     </style>
-
-
 
     <!-- G Suite Shortcuts -->
     <div class="wrapper">
@@ -120,8 +83,9 @@
               return [
                 { type: 'web', icon: 'confluence', title: 'Confluence', page: 'https://confluence.wds.sk/', visible: true },
                 { type: 'web', icon: 'jira', title: 'JIRA', page: 'https://jira.wds.sk/', visible: true },
-                { type: 'web', icon: 'youtrack', title: 'Youtrack', page: 'https://youtrack.wds.sk/', visible: true },
-                { type: 'web', icon: 'gitlab', title: 'Gitlab', page: 'https://gitlab.wds.sk/', visible: true }
+                { type: 'web', icon: 'zabbix', title: 'Zabbix', page: 'https://zabbix.wds.sk/', visible: true },
+                { type: 'web', icon: 'gitlab', title: 'Gitlab', page: 'https://gitlab.wds.sk/', visible: true },
+                { type: 'web', icon: 'kibana', title: 'Kibana', page: 'https://elk.wds.sk/', visible: true }
               ]
             }
           }
