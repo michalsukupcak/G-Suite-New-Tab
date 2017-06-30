@@ -348,8 +348,10 @@
           // Reset extension if new version is detected
           var version = '__gsuitenewtab_version_check_' + this.APP_VERSION;
           if (!window.localStorage.getItem(version)) {
+            /* No need to clear localStorage this version
             window.localStorage.clear();
             window.localStorage.setItem(version, true);
+            */
             this.$.changelog.open();
           }
 
