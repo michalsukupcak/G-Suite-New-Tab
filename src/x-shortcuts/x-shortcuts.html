@@ -32,8 +32,6 @@
 
     <!-- WDS Domain Shortcuts -->
     <template is="dom-if" if="[[showWdsDomain]]">
-
-      <!-- Shortcuts -->
       <div class="wrapper wds">
         <template is="dom-repeat" items="[[wdsDomainShortcuts]]" as="shortcut">
           <div class="shortcut" on-tap="_openShortcut" hidden$="[[!shortcut.visible]]">
@@ -43,10 +41,7 @@
           </div>
         </template>
       </div>
-
     </template>
-
-
 
   </template>
   <script>
