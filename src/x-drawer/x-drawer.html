@@ -6,63 +6,41 @@
     <style>
 
       /* Element */
-      :host {
-        color: var(--darker-gray-text-color);
-        display: block;
-        font-size: 1.3em;
-      }
+      :host { color: var(--darker-gray-text-color); display: block; font-size: 1.3em; }
 
       /* Header */
-      header {
-        @apply(--shadow-elevation-2dp);
-        background: #EEE;
-        border-bottom: 1px solid var(--border-color);
-        margin: 0 0 12px 0;
-        padding: 24px;
-      }
-      header div.g-suite { font-size: 2.6em; }
-      header div.new-tab {}
+      header { @apply(--shadow-elevation-2dp); background: #EEE; border-bottom: 1px solid var(--border-color); margin: 0 0 12px 0; padding: 24px; }
+      header img { max-width: 100%; }
+      header div.description { font-weight: 300; margin: 12px 0 0 0; text-align: center; }
+      header a { color: var(--secondary-text-color); display: block; font-size: .7em; font-weight: 300; text-align: center; text-decoration: none; }
+      header a:hover { text-decoration: underline; }
 
       /* Content */
       main {}
 
       /* Content - Link */
-      main div {
-        @apply(--layout-horizontal);
-        @apply(--layout-center);
-        cursor: pointer;
-        padding: 12px 24px;
-        position: relative;
-        transition: .2s ease;
-      }
-      main div:hover {
-        background: var(--border-color);
-        color: var(--dark-gray-text-color);
-      }
+      main div { @apply(--layout-horizontal); @apply(--layout-center); cursor: pointer; padding: 12px 24px; position: relative; transition: .2s ease; }
+      main div:hover { background: var(--border-color); color: var(--dark-gray-text-color); }
 
       /* Content - Link - Ripple */
       main div paper-ripple {}
 
       /* Content - Link - Icon */
-      main div iron-icon {
-        margin-right: 32px;
-      }
+      main div iron-icon { margin-right: 32px; }
 
       /* Content - Link - Text */
       main div span {}
 
       /* Content - Link - Text */
-      main hr {
-        border: none;
-        border-top: 1px solid var(--border-color);
-      }
+      main hr { border: none; border-top: 1px solid var(--border-color); }
 
     </style>
 
     <!-- Drawer header -->
     <header>
-      <div class="g-suite">G Suite</div>
-      <div class="new-tab">New Tab Chrome Extension</div>
+      <img src="/images/logo.png">
+      <div class="description">New Tab Chrome Extension</div>
+      <a href="https://github.com/michalsukupcak/G-Suite-New-Tab">GitHub Repository</a>
     </header>
 
     <!-- Drawer content -->
@@ -101,13 +79,11 @@
 
       <!-- Chrome tabs -->
       <template is="dom-repeat" items="[[tabs]]" as="tab">
-        <span hidden$="[[!tab.visible]]">
-          <div on-tap="_openTab">
-            <paper-ripple></paper-ripple>
-            <iron-icon icon="icons:[[tab.icon]]"></iron-icon>
-            <span>[[tab.title]]</span>
-          </div>
-        </span>
+        <div on-tap="_openTab">
+          <paper-ripple></paper-ripple>
+          <iron-icon icon="icons:[[tab.icon]]"></iron-icon>
+          <span>[[tab.title]]</span>
+        </div>
       </template>
 
       <!-- 2nd separator -->
