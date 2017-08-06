@@ -1,0 +1,41 @@
+<!-- Element -->
+<dom-module id="x-logo">
+  <template>
+
+    <!-- CSS -->
+    <style>
+
+      /* Element */
+      :host {
+        color: var(--light-gray-text-color);
+        display: block;
+      }
+
+      /* Google logo */
+      div.logo {}
+      div.logo img { box-sizing: border-box; display: block; margin: 70px auto 6px auto; max-width: 312px; width: 100%; }
+
+      /* Logo subtitle */
+      div.subtitle { box-sizing: border-box; font-size: 1.4em; margin: auto auto 64px auto; max-width: 312px; text-align: right; width: 100%; }
+
+    </style>
+
+    <!-- Google logo -->
+    <div class="logo"><img src="../../images/google-logo.png"></div>
+    <div class="subtitle">G Suite New Tab</div>
+
+  </template>
+  <script>
+    (function () {
+      'use strict';
+      Polymer({
+
+        /**
+         * Element configuration (is, behaviors, properties, observers).
+         */
+        is: 'x-logo'
+
+      });
+    })();
+  </script>
+</dom-module>

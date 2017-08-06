@@ -30,7 +30,7 @@
 <link rel="import" href="x-cards/x-dashboard/x-dashboard.html">
 <link rel="import" href="x-cards/x-cards.html">
 <link rel="import" href="x-drawer/x-drawer.html">
-<link rel="import" href="x-search/x-search.html">
+<link rel="import" href="x-logo/x-logo.html">
 <link rel="import" href="x-shortcuts/x-shortcuts.html">
 <link rel="import" href="x-toolbar/x-toolbar.html">
 
@@ -146,8 +146,8 @@
         <main id="content">
 
           <!-- Search bar -->
-          <template is="dom-if" if="[[showSearch]]">
-            <x-search></x-search>
+          <template is="dom-if" if="[[showLogo]]">
+            <x-logo></x-logo>
           </template>
 
           <!-- Shortcuts -->
@@ -181,8 +181,8 @@
         <div class="description">Customize settings of the extension to match your needs and preferences.</div>
 
         <!-- Search box -->
-        <h3>Search box</h3>
-        <paper-checkbox checked="{{showSearch}}">Show search box with Google logo.</paper-checkbox>
+        <h3>Google logo</h3>
+        <paper-checkbox checked="{{showLogo}}">Show Google logo.</paper-checkbox>
 
         <!-- Search box -->
         <h3>WDS.sk domain apps</h3>
@@ -255,7 +255,7 @@
 
     <!-- Browser local storage -->
     <iron-localstorage name="__gsuitenewtab_gsuiteshortcuts" value="{{gSuiteShortcuts}}"></iron-localstorage>
-    <iron-localstorage name="__gsuitenewtab_showsearch" value="{{showSearch}}"></iron-localstorage>
+    <iron-localstorage name="__gsuitenewtab_showlogo" value="{{showLogo}}"></iron-localstorage>
     <iron-localstorage name="__gsuitenewtab_showwdsdomain" value="{{showWdsDomain}}"></iron-localstorage>
     <iron-localstorage name="__gsuitenewtab_tabs" value="{{tabs}}"></iron-localstorage>
     <iron-localstorage name="__gsuitenewtab_usefixeddrawer" value="{{useFixedDrawer}}"></iron-localstorage>
@@ -291,7 +291,7 @@
           /**
            * Search box visibility toggle.
            */
-          showSearch: {
+          showLogo: {
             type: Boolean
           },
 
@@ -329,7 +329,7 @@
         observers: [
           '_setDefaultValues(' +
             'gSuiteShortcuts,' +
-            'showSearch,' +
+            'showLogo,' +
             'showWdsDomain,' +
             'tabs,' +
             'useFixedDrawer,' +
@@ -407,7 +407,7 @@
          * Observer for default configuration values.
          *
          * @param gSuiteShortcuts
-         * @param showSearch
+         * @param showLogo
          * @param showWdsDomain
          * @param tabs
          * @param useFixedDrawer
@@ -416,7 +416,7 @@
          */
         _setDefaultValues: function (
             gSuiteShortcuts,
-            showSearch,
+            showLogo,
             showWdsDomain,
             tabs,
             useFixedDrawer,
@@ -444,9 +444,9 @@
               ]);
             }
 
-            // Search is visible by default
-            if (showSearch === null) {
-              this.set('showSearch', true);
+            // Logo is visible by default
+            if (showLogo === null) {
+              this.set('showLogo', true);
             }
 
             // WDS domain apps are visible by default
