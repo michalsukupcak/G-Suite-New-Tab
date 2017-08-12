@@ -231,9 +231,10 @@
       <paper-dialog-scrollable>
         G Suite New Tab extension just got updated! Highlights:<br>
         <br>
-        * [New] Main menu drawer can now be set to always visible instead of always hidden.<br>
-        * [Fix] Extension settings will no longer reset after an update!<br>
-        <br>
+        * [New] Dropped search bar is it was a very rarely used feature.<br>
+        * [New] Slightly lighter background.<br>
+        * [New] Updated drawer design.<br>
+        * [New] "Chrome tabs" hidden through customization now disappear only from the toolbar, but remain in the drawer menu.<br>        <br>
         Full changelog: <a href="https://chrome.google.com/webstore/detail/g-suite-new-tab/ehpgcagmhpndkmglombjndkdmggkgnge">Webstore</a><br>
         Source code: <a href="https://github.com/michalsukupcak/G-Suite-New-Tab" target="_blank">Github</a><br>
       </paper-dialog-scrollable>
@@ -278,7 +279,7 @@
            */
           APP_VERSION: {
             type: Number,
-            value: 12
+            value: 13
           },
 
           /**
@@ -359,8 +360,8 @@
           var that = this;
           document.addEventListener('scroll', function () {
             if (document.body.scrollTop > 0) {
-              if (that.$.toolbar.style.backgroundColor !== '#FAFAFA') {
-                that.$.toolbar.style.backgroundColor = '#FAFAFA';
+              if (that.$.toolbar.style.backgroundColor !== '#F2F2F2') {
+                that.$.toolbar.style.backgroundColor = '#F2F2F2';
               }
             } else {
               if (that.$.toolbar.style.backgroundColor !== '') {
