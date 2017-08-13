@@ -231,10 +231,11 @@
       <paper-dialog-scrollable>
         G Suite New Tab extension just got updated! Highlights:<br>
         <br>
-        * [New] Dropped search bar is it was a very rarely used feature.<br>
-        * [New] Slightly lighter background.<br>
-        * [New] Updated drawer design.<br>
-        * [New] "Chrome tabs" hidden through customization now disappear only from the toolbar, but remain in the drawer menu.<br>        <br>
+        * [New] App shortcuts are now handled as standard links:<br>
+        - Left mouse button click opens link in current tab by default.
+        - Middle mouse button click opens link innew tab,
+        - Right mouse button click opens standard context menu for links.<br>
+        <br>
         Full changelog: <a href="https://chrome.google.com/webstore/detail/g-suite-new-tab/ehpgcagmhpndkmglombjndkdmggkgnge">Webstore</a><br>
         Source code: <a href="https://github.com/michalsukupcak/G-Suite-New-Tab" target="_blank">Github</a><br>
       </paper-dialog-scrollable>
@@ -279,7 +280,7 @@
            */
           APP_VERSION: {
             type: Number,
-            value: 13
+            value: 14
           },
 
           /**
@@ -349,11 +350,13 @@
           // Reset extension if new version is detected
           var version = '__gsuitenewtab_version_check_' + this.APP_VERSION;
           if (!window.localStorage.getItem(version)) {
-            /* No need to clear localStorage this version
-            window.localStorage.clear();
-            */
+
+            // Save new version item
             window.localStorage.setItem(version, true);
+
+            // Open changelog
             this.$.changelog.open();
+
           }
 
           // Register scroll listener

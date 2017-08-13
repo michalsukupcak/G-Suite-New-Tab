@@ -11,22 +11,22 @@
       /* Shortcuts */
       div.wrapper { @apply(--layout-horizontal); @apply(--layout-center-justified); @apply(--layout-wrap); font-size: 1.3em; }
       div.wrapper.wds { border-top: 1px solid var(--divider-color); margin: 18px auto auto auto; max-width: 1024px; padding: 18px 0 0 0; }
-      div.wrapper div.shortcut { border-radius: 3px; padding: 18px 0 0 0; position: relative; transition: .2s ease; width: 128px; }
-      div.wrapper div.shortcut:hover { background: var(--border-color); cursor: pointer; }
-      div.wrapper div.shortcut:hover > p { color: var(--dark-gray-text-color); }
-      div.wrapper div.shortcut img { display: block; height: 48px; margin: auto; max-width: 100%; }
-      div.wrapper div.shortcut p { color: var(--gray-text-color); margin: 0; padding: 9px 0; text-align: center; transition: .2s ease; }
+      div.wrapper a.shortcut { border-radius: 3px; padding: 18px 0 0 0; position: relative; text-decoration: none; transition: .2s ease; width: 128px; }
+      div.wrapper a.shortcut:hover { background: var(--border-color); cursor: pointer; }
+      div.wrapper a.shortcut:hover > p { color: var(--dark-gray-text-color); }
+      div.wrapper a.shortcut img { display: block; height: 48px; margin: auto; max-width: 100%; }
+      div.wrapper a.shortcut p { color: var(--gray-text-color); margin: 0; padding: 9px 0; text-align: center; transition: .2s ease; }
 
     </style>
 
     <!-- G Suite Shortcuts -->
     <div class="wrapper">
       <template is="dom-repeat" items="[[gSuiteShortcuts]]" as="shortcut">
-        <div class="shortcut" on-tap="_openShortcut" hidden$="[[!shortcut.visible]]">
+        <a href="[[shortcut.page]]" class="shortcut" hidden$="[[!shortcut.visible]]">
           <paper-ripple></paper-ripple>
           <img src="../../images/shortcuts/[[shortcut.icon]].png">
           <p>[[shortcut.title]]</p>
-        </div>
+        </a>
       </template>
     </div>
 
@@ -34,11 +34,11 @@
     <template is="dom-if" if="[[showWdsDomain]]">
       <div class="wrapper wds">
         <template is="dom-repeat" items="[[wdsDomainShortcuts]]" as="shortcut">
-          <div class="shortcut" on-tap="_openShortcut" hidden$="[[!shortcut.visible]]">
+          <a href="[[shortcut.page]]" class="shortcut" hidden$="[[!shortcut.visible]]">
             <paper-ripple></paper-ripple>
             <img src="../../images/shortcuts/[[shortcut.icon]].png">
             <p>[[shortcut.title]]</p>
-          </div>
+          </a>
         </template>
       </div>
     </template>
@@ -78,28 +78,13 @@
               return [
                 { type: 'web', icon: 'confluence', title: 'Confluence', page: 'https://confluence.wds.sk/', visible: true },
                 { type: 'web', icon: 'jira', title: 'JIRA', page: 'https://jira.wds.sk/', visible: true },
-                { type: 'web', icon: 'zabbix', title: 'Zabbix', page: 'https://zabbix.wds.sk/', visible: true },
+                { type: 'web', icon: 'zabbix', title: 'Zabbix', page: 'https://monitor.wds.sk/zabbix', visible: true },
                 { type: 'web', icon: 'gitlab', title: 'Gitlab', page: 'https://gitlab.wds.sk/', visible: true },
                 { type: 'web', icon: 'kibana', title: 'Kibana', page: 'https://elk.wds.sk/', visible: true }
               ]
             }
           }
 
-        },
-
-        /**
-         * Opens chrome://... page.
-         *
-         * @private
-         */
-        _openShortcut: function (event) {
-          if (event.model.shortcut.type === 'web') {
-            chrome.tabs.create({ url: event.model.shortcut.page });
-          } else if (event.model.shortcut.type === 'extension') {
-            chrome.management.launchApp(event.model.shortcut.page);
-          } else {
-            alert('Invalid shortcut type: "' + event.model.shortcut.type + '"');
-          }
         }
 
       });
