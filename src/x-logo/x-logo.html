@@ -16,13 +16,17 @@
       div.logo img { box-sizing: border-box; display: block; margin: 70px auto 6px auto; max-width: 312px; width: 100%; }
 
       /* Logo subtitle */
-      div.subtitle { box-sizing: border-box; font-size: 1.4em; margin: auto auto 64px auto; max-width: 312px; text-align: right; width: 100%; }
+      div.subtitle { box-sizing: border-box; font-size: 1.4em; margin: auto auto 48px auto; max-width: 312px; text-align: right; width: 100%; }
+
+      div.search { @apply(--shadow-elevation-2dp); background: white; border-radius: 3px; box-sizing: border-box; margin: auto; max-width: 1024px; text-align: center; width: 100%; }
+      div.search input { background: transparent url('../../images/search.png') center left no-repeat; border: none; box-sizing: border-box; font-size: 1.2em; margin: 0 12px; outline: none; padding: 18px 24px 18px 42px; width: 100%; }
 
     </style>
 
     <!-- Google logo -->
     <div class="logo"><img src="../../images/google-logo.png"></div>
     <div class="subtitle">G Suite New Tab</div>
+    <div class="search"><input id="searchInput" placeholder="Search the web ..." on-keyup="_submitSearch"></div>
 
   </template>
   <script>
@@ -33,7 +37,17 @@
         /**
          * Element configuration (is, behaviors, properties, observers).
          */
-        is: 'x-logo'
+        is: 'x-logo',
+
+        /**
+         * Opens google search when enter key is pressed while typing to the
+         * @param event
+         */
+        _submitSearch: function (event) {
+          if (event.keyCode === 13) {
+            window.location = 'https://google.com/search?q=' + encodeURIComponent(this.$.searchInput.value);
+          }
+        }
 
       });
     })();

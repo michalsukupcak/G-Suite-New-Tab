@@ -6,20 +6,20 @@
     <style>
 
       /* Element */
-      :host { @apply(--layout-horizontal); @apply(--layout-center-justified); @apply(--layout-wrap); margin: auto; padding: 16px 0; width: 100%; }
+      :host { @apply(--layout-horizontal); @apply(--layout-center-justified); @apply(--layout-wrap); margin: auto; max-width: 1024px; padding: 16px 0; width: 100%; }
 
       /* Card wrapper */
-      paper-card { box-sizing: border-box; color: #666; margin: 12px; --paper-card-header: { border-bottom: 1px solid var(--divider-color); } }
+      paper-card { color: #666; --paper-card-header: { border-bottom: 1px solid var(--divider-color); } }
       paper-card.flat { background: transparent; border: none !important; box-shadow: none !important; }
-      paper-card.dashboard { margin-left: 24px; max-width: 244px; }
-      paper-card.bookmarks { margin-right: 24px; max-width: 688px; }
+      paper-card.dashboard { margin-right: 12px; width: calc(25% - 12px); }
+      paper-card.bookmarks { margin-left: 12px; width: calc(75% - 12px); }
 
       /* Card wrapper - Card content */
       paper-card div.card-content {}
 
       @media (max-width: 1024px) {
-        paper-card.dashboard { margin: 12px; width: 100%; }
-        paper-card.bookmarks { margin: 12px; width: 100%; }
+        paper-card.dashboard { margin: 0 0 12px 0; width: 100%; }
+        paper-card.bookmarks { margin: 0; width: 100%; }
       }
 
     </style>
