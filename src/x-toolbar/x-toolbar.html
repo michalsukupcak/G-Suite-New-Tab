@@ -44,10 +44,10 @@
       paper-menu-button paper-icon-button.dropdown-trigger {}
 
       /* Overflow menu - Content */
-      paper-menu-button paper-menu.dropdown-content {}
+      paper-menu-button paper-listbox.dropdown-content {}
 
       /* Overflow menu - Content - Menu item */
-      paper-menu-button paper-menu paper-item {
+      paper-menu-button paper-listbox paper-item {
         cursor: pointer;
       }
 
@@ -66,10 +66,10 @@
 
     <!-- Customize extension -->
     <paper-menu-button horizontal-align="right">
-      <paper-icon-button icon="icons:more-vert" class="dropdown-trigger"></paper-icon-button>
-      <paper-menu class="dropdown-content">
+      <paper-icon-button icon="icons:more-vert" slot="dropdown-trigger"></paper-icon-button>
+      <paper-listbox slot="dropdown-content">
         <paper-item on-tap="_openCustomizeDialog">Customize Extension</paper-item>
-      </paper-menu>
+      </paper-listbox>
     </paper-menu-button>
 
   </template>

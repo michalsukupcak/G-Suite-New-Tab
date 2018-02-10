@@ -8,6 +8,7 @@
 <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../bower_components/iron-localstorage/iron-localstorage.html">
 <link rel="import" href="../bower_components/iron-signals/iron-signals.html">
 <link rel="import" href="../bower_components/neon-animation/animations/fade-out-animation.html">
@@ -20,6 +21,7 @@
 <link rel="import" href="../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../bower_components/paper-menu/paper-menu.html">
 <link rel="import" href="../bower_components/paper-menu-button/paper-menu-button.html">
 <link rel="import" href="../bower_components/paper-ripple/paper-ripple.html">
@@ -61,6 +63,11 @@
       /* App panel - Drawer */
       app-drawer-layout app-drawer { --app-drawer-width: 264px; }
       app-drawer-layout app-drawer.fixed { border: 1px solid #CCC; }
+
+      /*app-drawer-layout app-drawer { height: 850px; background: #EEE; overflow: auto; }*/
+      /*app-drawer-layout app-drawer::-webkit-scrollbar {  transition: .2s ease; width: 8px; }*/
+      /*app-drawer-layout app-drawer::-webkit-scrollbar-track {}*/
+      /*app-drawer-layout app-drawer::-webkit-scrollbar-thumb { background: #CCC; transition: .2s ease; }*/
 
       /* App panel - Drawer - Drawer content */
       app-drawer-layout app-drawer x-drawer {}
@@ -231,8 +238,9 @@
       <paper-dialog-scrollable>
         G Suite New Tab extension just got updated! Highlights:<br>
         <br>
-        * [New] Search bar makes a return (further improvements for search bar are planned down the road).<br>
-        * [New] Minor UI improvements.<br>
+        * [New] Added links to Jamboard and Contacts core G Suite services.<br>
+        * [New] Updated dependencies do Polymer 2.0.<br>
+        * [Fix] Fixed transparent scrollbar.<br>
         <br>
         Full changelog: <a href="https://chrome.google.com/webstore/detail/g-suite-new-tab/ehpgcagmhpndkmglombjndkdmggkgnge">Webstore</a><br>
         Source code: <a href="https://github.com/michalsukupcak/G-Suite-New-Tab" target="_blank">Github</a><br>
@@ -278,7 +286,7 @@
            */
           APP_VERSION: {
             type: Number,
-            value: 15
+            value: 16
           },
 
           /**
@@ -352,6 +360,28 @@
             // Save new version item
             window.localStorage.setItem(version, true);
 
+            // Update script
+            var gSuiteShortcutsString = window.localStorage.getItem('__gsuitenewtab_gsuiteshortcuts');
+            if (gSuiteShortcutsString) {
+              var jamboardExists = false;
+              var contactsExists = false;
+              var gSuiteShortcuts = JSON.parse(gSuiteShortcutsString);
+              gSuiteShortcuts.forEach(function (gSuiteShortcut) {
+                if (gSuiteShortcut.title === 'Jamboard') {
+                  jamboardExists = true;
+                } else if (gSuiteShortcut.title === 'Contacts') {
+                  contactsExists = true;
+                }
+              });
+              if (!jamboardExists) {
+                gSuiteShortcuts.splice(6, 0, { type: 'web', icon: 'jamboard', title: 'Jamboard', page: 'https://jamboard.google.com/', visible: true });
+              }
+              if (!contactsExists) {
+                gSuiteShortcuts.splice(13, 0, { type: 'web', icon: 'contacts', title: 'Contacts', page: 'https://contacts.google.com', visible: true });
+              }
+              window.localStorage.setItem('__gsuitenewtab_gsuiteshortcuts', gSuiteShortcuts);
+            }
+
             // Open changelog
             this.$.changelog.open();
 
@@ -360,7 +390,7 @@
           // Register scroll listener
           var that = this;
           document.addEventListener('scroll', function () {
-            if (document.body.scrollTop > 0) {
+            if (window.pageYOffset > 0) {
               if (that.$.toolbar.style.backgroundColor !== '#E5E5E5') {
                 that.$.toolbar.style.backgroundColor = '#E5E5E5';
               }
@@ -435,12 +465,14 @@
                 { type: 'web', icon: 'hangouts', title: 'Hangouts', page: 'https://hangouts.google.com', visible: true },
                 { type: 'web', icon: 'drive', title: 'Drive', page: 'https://drive.google.com/drive/my-drive', visible: true },
                 { type: 'web', icon: 'keep', title: 'Keep', page: 'https://keep.google.com/', visible: true },
+                { type: 'web', icon: 'jamboard', title: 'Jamboard', page: 'https://jamboard.google.com/', visible: true },
                 { type: 'web', icon: 'gallery', title: 'Gallery.io', page: 'https://gallery.io/', visible: true },
                 { type: 'web', icon: 'calendar', title: 'Calendar', page: 'https://calendar.google.com/calendar/render', visible: true },
                 { type: 'web', icon: 'inbox', title: 'Inbox', page: 'https://inbox.google.com', visible: true },
                 { type: 'web', icon: 'cloud', title: 'Cloud Search', page: 'https://cloudsearch.google.com/cloudsearch', visible: true },
                 { type: 'web', icon: 'my-account', title: 'My Account', page: 'https://myaccount.google.com/', visible: true },
                 { type: 'web', icon: 'groups', title: 'Groups', page: 'https://groups.google.com/a/wds.sk/forum/#!myforums', visible: true },
+                { type: 'web', icon: 'contacts', title: 'Contacts', page: 'https://contacts.google.com', visible: true },
                 { type: 'web', icon: 'gmail', title: 'Gmail', page: 'https://mail.google.com/mail/u/0/#inbox', visible: true },
                 { type: 'web', icon: 'plus', title: 'Google+', page: 'https://plus.google.com/', visible: true }
               ]);
@@ -453,7 +485,7 @@
 
             // WDS domain apps are visible by default
             if (showWdsDomain === null) {
-              this.set('showWdsDomain', true);
+              this.set('showWdsDomain', false);
             }
 
             // Create initial tabs config (if empty)
