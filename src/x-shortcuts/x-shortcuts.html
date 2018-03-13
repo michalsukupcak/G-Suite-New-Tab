@@ -6,34 +6,33 @@
     <style>
 
       /* Element */
-      :host { display: block; }
+      :host { display: block; position: relative; }
 
-      /* Shortcuts */
-      div.wrapper { @apply(--layout-horizontal); @apply(--layout-center-justified); @apply(--layout-wrap); font-size: 1.3em; }
-      div.wrapper.wds { border-top: 1px solid var(--divider-color); margin: 18px auto auto auto; max-width: 1024px; padding: 18px 0 0 0; }
-      div.wrapper a.shortcut { border-radius: 3px; padding: 18px 0 0 0; position: relative; text-decoration: none; transition: .2s ease; width: 128px; }
-      div.wrapper a.shortcut:hover { background: var(--border-color); cursor: pointer; }
-      div.wrapper a.shortcut:hover > p { color: var(--dark-gray-text-color); }
-      div.wrapper a.shortcut img { display: block; height: 48px; margin: auto; max-width: 100%; }
-      div.wrapper a.shortcut p { color: var(--gray-text-color); margin: 0; padding: 9px 0; text-align: center; transition: .2s ease; }
+      /* Wrapper */
+      div.wrapper {}
+
+      /* Wrapper / Shortcuts */
+      div.wrapper div.block { @apply(--layout-horizontal); @apply(--layout-center-justified); @apply(--layout-wrap); font-size: 1.3em; }
+      div.wrapper div.block.wds { border-top: 1px solid var(--divider-color); margin: 18px auto auto auto; max-width: 1024px; padding: 18px 0 0 0; }
+      div.wrapper div.block a.shortcut { border-radius: 3px; padding: 18px 0 0 0; position: relative; text-decoration: none; transition: .2s ease; width: 128px; }
+      div.wrapper div.block a.shortcut:hover { background: var(--border-color); cursor: pointer; }
+      div.wrapper div.block a.shortcut:hover > p { color: var(--dark-gray-text-color); }
+      div.wrapper div.block a.shortcut img { display: block; height: 48px; margin: auto; max-width: 100%; }
+      div.wrapper div.block a.shortcut p { color: var(--gray-text-color); margin: 0; padding: 9px 0; text-align: center; transition: .2s ease; }
+
+      /* Wrapper / Buttons */
+      div.wrapper paper-button.edit-button { color: #999; opacity: 0; position: absolute; right: 12px; top: -28px; transition: .2s ease; }
+      div.wrapper paper-button.edit-button iron-icon { margin: 0 6px 0 0; --iron-icon-height: 15px; --iron-icon-width: 15px; }
+      div.wrapper paper-button.edit-button:hover { color: #333; }
+      div.wrapper:hover > paper-button.edit-button { opacity: 1; }
 
     </style>
 
-    <!-- G Suite Shortcuts -->
     <div class="wrapper">
-      <template is="dom-repeat" items="[[gSuiteShortcuts]]" as="shortcut">
-        <a href="[[shortcut.page]]" class="shortcut" hidden$="[[!shortcut.visible]]">
-          <paper-ripple></paper-ripple>
-          <img src="../../images/shortcuts/[[shortcut.icon]].png">
-          <p>[[shortcut.title]]</p>
-        </a>
-      </template>
-    </div>
 
-    <!-- WDS Domain Shortcuts -->
-    <template is="dom-if" if="[[showWdsDomain]]">
-      <div class="wrapper wds">
-        <template is="dom-repeat" items="[[wdsDomainShortcuts]]" as="shortcut">
+      <!-- G Suite Shortcuts -->
+      <div class="block">
+        <template is="dom-repeat" items="[[gSuiteShortcuts]]" as="shortcut">
           <a href="[[shortcut.page]]" class="shortcut" hidden$="[[!shortcut.visible]]">
             <paper-ripple></paper-ripple>
             <img src="../../images/shortcuts/[[shortcut.icon]].png">
@@ -41,7 +40,27 @@
           </a>
         </template>
       </div>
-    </template>
+
+      <!-- WDS Domain Shortcuts -->
+      <template is="dom-if" if="[[showWdsDomain]]">
+        <div class="block wds">
+          <template is="dom-repeat" items="[[wdsDomainShortcuts]]" as="shortcut">
+            <a href="[[shortcut.page]]" class="shortcut" hidden$="[[!shortcut.visible]]">
+              <paper-ripple></paper-ripple>
+              <img src="../../images/shortcuts/[[shortcut.icon]].png">
+              <p>[[shortcut.title]]</p>
+            </a>
+          </template>
+        </div>
+      </template>
+
+      <!-- Edit button -->
+      <paper-button class="edit-button" on-tap="__openCustomizeDialog">
+        <iron-icon icon="icons:settings"></iron-icon>
+        <span>Customize</span>
+      </paper-button>
+
+    </div>
 
   </template>
   <script>
@@ -85,6 +104,10 @@
             }
           }
 
+        },
+
+        __openCustomizeDialog: function () {
+          this.dispatchEvent(new Event('open-customize-dialog'));
         }
 
       });

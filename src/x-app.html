@@ -160,7 +160,8 @@
           <!-- Shortcuts -->
           <x-shortcuts
             g-suite-shortcuts="{{gSuiteShortcuts}}"
-            show-wds-domain="{{showWdsDomain}}">
+            show-wds-domain="{{showWdsDomain}}"
+            on-open-customize-dialog="_openCustomizeDialog">
           </x-shortcuts>
 
           <!-- Cards -->
@@ -238,9 +239,8 @@
       <paper-dialog-scrollable>
         G Suite New Tab extension just got updated! Highlights:<br>
         <br>
-        * [New] Added links to Jamboard and Contacts core G Suite services.<br>
-        * [New] Updated dependencies do Polymer 2.0.<br>
-        * [Fix] Fixed transparent scrollbar.<br>
+        * [New] App links to Firebase and Developer Console.<br>
+        * [New] Customize button near apps.<br>
         <br>
         Full changelog: <a href="https://chrome.google.com/webstore/detail/g-suite-new-tab/ehpgcagmhpndkmglombjndkdmggkgnge">Webstore</a><br>
         Source code: <a href="https://github.com/michalsukupcak/G-Suite-New-Tab" target="_blank">Github</a><br>
@@ -286,7 +286,7 @@
            */
           APP_VERSION: {
             type: Number,
-            value: 16
+            value: 17
           },
 
           /**
@@ -363,21 +363,21 @@
             // Update script
             var gSuiteShortcutsString = window.localStorage.getItem('__gsuitenewtab_gsuiteshortcuts');
             if (gSuiteShortcutsString) {
-              var jamboardExists = false;
-              var contactsExists = false;
+              var firebaseExists = false;
+              var playConsoleExists = false;
               var gSuiteShortcuts = JSON.parse(gSuiteShortcutsString);
               gSuiteShortcuts.forEach(function (gSuiteShortcut) {
-                if (gSuiteShortcut.title === 'Jamboard') {
-                  jamboardExists = true;
-                } else if (gSuiteShortcut.title === 'Contacts') {
-                  contactsExists = true;
+                if (gSuiteShortcut.title === 'Firebase') {
+                  firebaseExists = true;
+                } else if (gSuiteShortcut.title === 'Play Console') {
+                  playConsoleExists = true;
                 }
               });
-              if (!jamboardExists) {
-                gSuiteShortcuts.splice(6, 0, { type: 'web', icon: 'jamboard', title: 'Jamboard', page: 'https://jamboard.google.com/', visible: true });
+              if (!firebaseExists) {
+                gSuiteShortcuts.splice(6, 0, { type: 'web', icon: 'firebase', title: 'Firebase', page: 'https://console.firebase.google.com/', visible: true });
               }
-              if (!contactsExists) {
-                gSuiteShortcuts.splice(13, 0, { type: 'web', icon: 'contacts', title: 'Contacts', page: 'https://contacts.google.com', visible: true });
+              if (!playConsoleExists) {
+                gSuiteShortcuts.splice(17, 0, { type: 'web', icon: 'play-console', title: 'Play Console', page: 'https://play.google.com/apps/publish', visible: true });
               }
               window.localStorage.setItem('__gsuitenewtab_gsuiteshortcuts', gSuiteShortcuts);
             }
@@ -465,6 +465,7 @@
                 { type: 'web', icon: 'hangouts', title: 'Hangouts', page: 'https://hangouts.google.com', visible: true },
                 { type: 'web', icon: 'drive', title: 'Drive', page: 'https://drive.google.com/drive/my-drive', visible: true },
                 { type: 'web', icon: 'keep', title: 'Keep', page: 'https://keep.google.com/', visible: true },
+                { type: 'web', icon: 'firebase', title: 'Firebase', page: 'https://console.firebase.google.com/', visible: true },
                 { type: 'web', icon: 'jamboard', title: 'Jamboard', page: 'https://jamboard.google.com/', visible: true },
                 { type: 'web', icon: 'gallery', title: 'Gallery.io', page: 'https://gallery.io/', visible: true },
                 { type: 'web', icon: 'calendar', title: 'Calendar', page: 'https://calendar.google.com/calendar/render', visible: true },
@@ -474,7 +475,8 @@
                 { type: 'web', icon: 'groups', title: 'Groups', page: 'https://groups.google.com/a/wds.sk/forum/#!myforums', visible: true },
                 { type: 'web', icon: 'contacts', title: 'Contacts', page: 'https://contacts.google.com', visible: true },
                 { type: 'web', icon: 'gmail', title: 'Gmail', page: 'https://mail.google.com/mail/u/0/#inbox', visible: true },
-                { type: 'web', icon: 'plus', title: 'Google+', page: 'https://plus.google.com/', visible: true }
+                { type: 'web', icon: 'plus', title: 'Google+', page: 'https://plus.google.com/', visible: true },
+                { type: 'web', icon: 'play-console', title: 'Play Console', page: 'https://play.google.com/apps/publish', visible: true }
               ]);
             }
 
