@@ -239,8 +239,9 @@
       <paper-dialog-scrollable>
         G Suite New Tab extension just got updated! Highlights:<br>
         <br>
-        * [New] App links to Firebase and Developer Console.<br>
-        * [New] Customize button near apps.<br>
+        * [New] App links to Analytics and Cloud Console.<br>
+        * [New] Updated Gallery.io app icon.<br>
+        * [Fix] Search bar icon works again.<br>
         <br>
         Full changelog: <a href="https://chrome.google.com/webstore/detail/g-suite-new-tab/ehpgcagmhpndkmglombjndkdmggkgnge">Webstore</a><br>
         Source code: <a href="https://github.com/michalsukupcak/G-Suite-New-Tab" target="_blank">Github</a><br>
@@ -286,7 +287,7 @@
            */
           APP_VERSION: {
             type: Number,
-            value: 17
+            value: 18
           },
 
           /**
@@ -363,21 +364,21 @@
             // Update script
             var gSuiteShortcutsString = window.localStorage.getItem('__gsuitenewtab_gsuiteshortcuts');
             if (gSuiteShortcutsString) {
-              var firebaseExists = false;
-              var playConsoleExists = false;
+              var analyticsExists = false;
+              var cloudConsoleExists = false;
               var gSuiteShortcuts = JSON.parse(gSuiteShortcutsString);
               gSuiteShortcuts.forEach(function (gSuiteShortcut) {
-                if (gSuiteShortcut.title === 'Firebase') {
-                  firebaseExists = true;
-                } else if (gSuiteShortcut.title === 'Play Console') {
-                  playConsoleExists = true;
+                if (gSuiteShortcut.title === 'Analytics') {
+                  analyticsExists = true;
+                } else if (gSuiteShortcut.title === 'Cloud Console') {
+                  cloudConsoleExists = true;
                 }
               });
-              if (!firebaseExists) {
-                gSuiteShortcuts.splice(6, 0, { type: 'web', icon: 'firebase', title: 'Firebase', page: 'https://console.firebase.google.com/', visible: true });
+              if (!analyticsExists) {
+                gSuiteShortcuts.splice(6, 0, { type: 'web', icon: 'analytics', title: 'Analytics', page: 'https://analytics.google.com/analytics/web', visible: true });
               }
-              if (!playConsoleExists) {
-                gSuiteShortcuts.splice(17, 0, { type: 'web', icon: 'play-console', title: 'Play Console', page: 'https://play.google.com/apps/publish', visible: true });
+              if (!cloudConsoleExists) {
+                gSuiteShortcuts.splice(10, 0, { type: 'web', icon: 'cloud-console', title: 'Cloud Console', page: 'https://console.cloud.google.com/', visible: true });
               }
               window.localStorage.setItem('__gsuitenewtab_gsuiteshortcuts', gSuiteShortcuts);
             }
@@ -465,9 +466,11 @@
                 { type: 'web', icon: 'hangouts', title: 'Hangouts', page: 'https://hangouts.google.com', visible: true },
                 { type: 'web', icon: 'drive', title: 'Drive', page: 'https://drive.google.com/drive/my-drive', visible: true },
                 { type: 'web', icon: 'keep', title: 'Keep', page: 'https://keep.google.com/', visible: true },
+                { type: 'web', icon: 'analytics', title: 'Analytics', page: 'https://analytics.google.com/analytics/web', visible: true },
                 { type: 'web', icon: 'firebase', title: 'Firebase', page: 'https://console.firebase.google.com/', visible: true },
                 { type: 'web', icon: 'jamboard', title: 'Jamboard', page: 'https://jamboard.google.com/', visible: true },
                 { type: 'web', icon: 'gallery', title: 'Gallery.io', page: 'https://gallery.io/', visible: true },
+                { type: 'web', icon: 'cloud-console', title: 'Cloud Console', page: 'https://console.cloud.google.com/', visible: true },
                 { type: 'web', icon: 'calendar', title: 'Calendar', page: 'https://calendar.google.com/calendar/render', visible: true },
                 { type: 'web', icon: 'inbox', title: 'Inbox', page: 'https://inbox.google.com', visible: true },
                 { type: 'web', icon: 'cloud', title: 'Cloud Search', page: 'https://cloudsearch.google.com/cloudsearch', visible: true },
