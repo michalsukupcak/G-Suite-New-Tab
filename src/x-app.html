@@ -239,9 +239,8 @@
       <paper-dialog-scrollable>
         G Suite New Tab extension just got updated! Highlights:<br>
         <br>
-        * [New] App links to Analytics and Cloud Console.<br>
-        * [New] Updated Gallery.io app icon.<br>
-        * [Fix] Search bar icon works again.<br>
+        * [Fix] Groups app link now points to correct URL.<br>
+        * [Optimization] Extension size decreased from 1.9MB to 1.3MB.<br>
         <br>
         Full changelog: <a href="https://chrome.google.com/webstore/detail/g-suite-new-tab/ehpgcagmhpndkmglombjndkdmggkgnge">Webstore</a><br>
         Source code: <a href="https://github.com/michalsukupcak/G-Suite-New-Tab" target="_blank">Github</a><br>
@@ -287,7 +286,7 @@
            */
           APP_VERSION: {
             type: Number,
-            value: 18
+            value: 19
           },
 
           /**
@@ -364,22 +363,20 @@
             // Update script
             var gSuiteShortcutsString = window.localStorage.getItem('__gsuitenewtab_gsuiteshortcuts');
             if (gSuiteShortcutsString) {
-              var analyticsExists = false;
-              var cloudConsoleExists = false;
+              // var groupsExists = false;
+              // var cloudConsoleExists = false;
               var gSuiteShortcuts = JSON.parse(gSuiteShortcutsString);
               gSuiteShortcuts.forEach(function (gSuiteShortcut) {
-                if (gSuiteShortcut.title === 'Analytics') {
-                  analyticsExists = true;
-                } else if (gSuiteShortcut.title === 'Cloud Console') {
-                  cloudConsoleExists = true;
+                if (gSuiteShortcut.title === 'Groups') {
+                  gSuiteShortcut.page = 'https://groups.google.com/'
                 }
               });
-              if (!analyticsExists) {
-                gSuiteShortcuts.splice(6, 0, { type: 'web', icon: 'analytics', title: 'Analytics', page: 'https://analytics.google.com/analytics/web', visible: true });
-              }
-              if (!cloudConsoleExists) {
-                gSuiteShortcuts.splice(10, 0, { type: 'web', icon: 'cloud-console', title: 'Cloud Console', page: 'https://console.cloud.google.com/', visible: true });
-              }
+              // if (groupsExists) {
+              //   gSuiteShortcuts.splice(6, 0, { type: 'web', icon: 'analytics', title: 'Analytics', page: 'https://analytics.google.com/analytics/web', visible: true });
+              // }
+              // if (!cloudConsoleExists) {
+              //   gSuiteShortcuts.splice(10, 0, { type: 'web', icon: 'cloud-console', title: 'Cloud Console', page: 'https://console.cloud.google.com/', visible: true });
+              // }
               window.localStorage.setItem('__gsuitenewtab_gsuiteshortcuts', gSuiteShortcuts);
             }
 
@@ -475,7 +472,7 @@
                 { type: 'web', icon: 'inbox', title: 'Inbox', page: 'https://inbox.google.com', visible: true },
                 { type: 'web', icon: 'cloud', title: 'Cloud Search', page: 'https://cloudsearch.google.com/cloudsearch', visible: true },
                 { type: 'web', icon: 'my-account', title: 'My Account', page: 'https://myaccount.google.com/', visible: true },
-                { type: 'web', icon: 'groups', title: 'Groups', page: 'https://groups.google.com/a/wds.sk/forum/#!myforums', visible: true },
+                { type: 'web', icon: 'groups', title: 'Groups', page: 'https://groups.google.com/', visible: true },
                 { type: 'web', icon: 'contacts', title: 'Contacts', page: 'https://contacts.google.com', visible: true },
                 { type: 'web', icon: 'gmail', title: 'Gmail', page: 'https://mail.google.com/mail/u/0/#inbox', visible: true },
                 { type: 'web', icon: 'plus', title: 'Google+', page: 'https://plus.google.com/', visible: true },
