@@ -165,7 +165,11 @@
           </x-shortcuts>
 
           <!-- Cards -->
-          <x-cards use-flat-style="[[useFlatStyle]]"></x-cards>
+          <x-cards
+            show-bookmarks-card="[[showBookmarksCard]]"
+            show-dashboard-card="[[showDashboardCard]]"
+            use-flat-style="[[useFlatStyle]]">
+          </x-cards>
 
         </main>
 
@@ -204,6 +208,8 @@
         <!-- Search box -->
         <h3>Cards</h3>
         <paper-checkbox checked="{{useFlatStyle}}">Use flat style for Dashboard and Bookmarks cards</paper-checkbox>
+        <paper-checkbox checked="{{showDashboardCard}}">Show Dashboard card</paper-checkbox>
+        <paper-checkbox checked="{{showBookmarksCard}}">Show Bookmarks card</paper-checkbox>
 
         <!-- Tabs buttons -->
         <h3>Chrome tabs:</h3>
@@ -239,8 +245,7 @@
       <paper-dialog-scrollable>
         G Suite New Tab extension just got updated! Highlights:<br>
         <br>
-        * [Fix] Groups app link now points to correct URL.<br>
-        * [Optimization] Extension size decreased from 1.9MB to 1.3MB.<br>
+        * [New] Ability to toggle visibility of Dashboard and Bookmarks cards from extension settings.<br>
         <br>
         Full changelog: <a href="https://chrome.google.com/webstore/detail/g-suite-new-tab/ehpgcagmhpndkmglombjndkdmggkgnge">Webstore</a><br>
         Source code: <a href="https://github.com/michalsukupcak/G-Suite-New-Tab" target="_blank">Github</a><br>
@@ -263,6 +268,8 @@
 
     <!-- Browser local storage -->
     <iron-localstorage name="__gsuitenewtab_gsuiteshortcuts" value="{{gSuiteShortcuts}}"></iron-localstorage>
+    <iron-localstorage name="__gsuitenewtab_showbookmarkscard" value="{{showBookmarksCard}}"></iron-localstorage>
+    <iron-localstorage name="__gsuitenewtab_showdashboardcard" value="{{showDashboardCard}}"></iron-localstorage>
     <iron-localstorage name="__gsuitenewtab_showlogo" value="{{showLogo}}"></iron-localstorage>
     <iron-localstorage name="__gsuitenewtab_showwdsdomain" value="{{showWdsDomain}}"></iron-localstorage>
     <iron-localstorage name="__gsuitenewtab_tabs" value="{{tabs}}"></iron-localstorage>
@@ -286,7 +293,7 @@
            */
           APP_VERSION: {
             type: Number,
-            value: 19
+            value: 20
           },
 
           /**
@@ -337,6 +344,8 @@
         observers: [
           '_setDefaultValues(' +
             'gSuiteShortcuts,' +
+            'showBookmarksCard,' +
+            'showDashboardCard,' +
             'showLogo,' +
             'showWdsDomain,' +
             'tabs,' +
@@ -437,6 +446,8 @@
          * Observer for default configuration values.
          *
          * @param gSuiteShortcuts
+         * @param showBookmarksCard
+         * @param showDashboardCard
          * @param showLogo
          * @param showWdsDomain
          * @param tabs
@@ -446,6 +457,8 @@
          */
         _setDefaultValues: function (
             gSuiteShortcuts,
+            showBookmarksCard,
+            showDashboardCard,
             showLogo,
             showWdsDomain,
             tabs,
@@ -478,6 +491,21 @@
                 { type: 'web', icon: 'plus', title: 'Google+', page: 'https://plus.google.com/', visible: true },
                 { type: 'web', icon: 'play-console', title: 'Play Console', page: 'https://play.google.com/apps/publish', visible: true }
               ]);
+            }
+
+            // Bookmarks card is visible by default
+            if (showBookmarksCard === null) {
+              this.set('showBookmarksCard', true);
+            }
+
+            // Dashboard card is visible by default
+            if (showDashboardCard === null) {
+              this.set('showDashboardCard', true);
+            }
+
+            // Logo is visible by default
+            if (showLogo === null) {
+              this.set('showLogo', true);
             }
 
             // Logo is visible by default

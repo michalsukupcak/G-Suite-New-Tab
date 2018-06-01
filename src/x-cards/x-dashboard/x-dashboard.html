@@ -10,7 +10,8 @@
 
       /* Link wrapper */
       div.wrapper {}
-      div.wrapper section { box-sizing: border-box; }
+      div.wrapper.two-column { @apply(--layout-horizontal); }
+      div.wrapper section { @apply --layout-flex; box-sizing: border-box; }
       div.wrapper section h1 { font-size: 1.6em; margin: 0 6px 6px 6px; }
       div.wrapper section div.sites {}
       div.wrapper section div.sites a { @apply(--layout-horizontal); @apply(--layout-center); border-radius: 3px; box-sizing: border-box; color: var(--darker-gray-text-color); padding: 4px 6px; text-decoration: none; transition: .2s ease; }
@@ -21,9 +22,9 @@
       div.wrapper div.clear { clear: both; display: none; }
 
       @media (max-width: 1024px) {
-        div.wrapper section { float: left; width: 50%; }
-        div.wrapper hr { display: none; }
-        div.wrapper div.clear { display: block; }
+        /*div.wrapper section { float: left; width: 50%; }*/
+        /*div.wrapper hr { display: none; }*/
+        /*div.wrapper div.clear { display: block; }*/
       }
 
       @media (max-width: 300px) {
@@ -35,7 +36,7 @@
     </style>
 
     <!-- Wrapper -->
-    <div class="wrapper">
+    <div class$="[[__getWrapperClass(showBookmarksCard)]]">
 
       <!-- Recently visited -->
       <section>
@@ -51,7 +52,7 @@
       </section>
 
       <!-- Separator -->
-      <hr>
+      <hr hidden$="[[!showBookmarksCard]]">
 
       <!-- Frequently visited -->
       <section>
@@ -94,6 +95,13 @@
           },
 
           /**
+           * Show bookmarks card.
+           */
+          showBookmarksCard: {
+            type: Boolean
+          },
+
+          /**
            * List of top visited sites.
            */
           topSites: {
@@ -128,6 +136,10 @@
               }
             }.bind(this));
           }.bind(this));
+        },
+
+        __getWrapperClass: function (showBookmarksCard) {
+          return 'wrapper' + (showBookmarksCard ? '' : ' two-column');
         }
 
       });

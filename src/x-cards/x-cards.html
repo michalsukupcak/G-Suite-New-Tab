@@ -11,8 +11,10 @@
       /* Card wrapper */
       paper-card { color: #666; --paper-card-header: { border-bottom: 1px solid var(--divider-color); } }
       paper-card.flat { background: transparent; border: none !important; box-shadow: none !important; }
-      paper-card.dashboard { margin-right: 12px; width: calc(25% - 12px); }
-      paper-card.bookmarks { margin-left: 12px; width: calc(75% - 12px); }
+      /*paper-card.dashboard { margin-right: 12px; width: calc(25% - 12px); }*/
+      paper-card.dashboard { @apply --layout-flex-4; margin-right: 12px;  }
+      /*paper-card.bookmarks { margin-left: 12px; width: calc(75% - 12px); }*/
+      paper-card.bookmarks { @apply --layout-flex-8; margin-left: 12px; }
 
       /* Card wrapper - Card content */
       paper-card div.card-content {}
@@ -25,18 +27,22 @@
     </style>
 
     <!-- Dashboard -->
-    <paper-card heading="Dashboard" class$="[[_getCardClass('dashboard', useFlatStyle)]]">
-      <div class="card-content">
-        <x-dashboard></x-dashboard>
-      </div>
-    </paper-card>
+    <template is="dom-if" if="[[showDashboardCard]]">
+      <paper-card heading="Dashboard" class$="[[_getCardClass('dashboard', useFlatStyle)]]">
+        <div class="card-content">
+          <x-dashboard show-bookmarks-card="[[showBookmarksCard]]"></x-dashboard>
+        </div>
+      </paper-card>
+    </template>
 
     <!-- Bookmarks -->
-    <paper-card heading="Bookmarks" class$="[[_getCardClass('bookmarks', useFlatStyle)]]">
-      <div class="card-content">
-        <x-bookmarks></x-bookmarks>
-      </div>
-    </paper-card>
+    <template is="dom-if" if="[[showBookmarksCard]]">
+      <paper-card heading="Bookmarks" class$="[[_getCardClass('bookmarks', useFlatStyle)]]">
+        <div class="card-content">
+          <x-bookmarks></x-bookmarks>
+        </div>
+      </paper-card>
+    </template>
 
   </template>
   <script>
@@ -51,11 +57,24 @@
         properties: {
 
           /**
+           * Show bookmarks card.
+           */
+          showBookmarksCard: {
+            type: Boolean
+          },
+
+          /**
+           * Show dashboard card.
+           */
+          showDashboardCard: {
+            type: Boolean
+          },
+
+          /**
            * Enable flat style for Dashboard and Bookmarks cards.
            */
           useFlatStyle: {
-            type: Boolean,
-            notify: true
+            type: Boolean
           }
 
         },
